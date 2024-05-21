@@ -7,7 +7,7 @@
         public DateTime dateCheckIn { get; set; }
         public DateTime dateCheckOut { get; set; }
         public int guestCount { get; set; }
-        public string roomType { get; set; }
+        public int roomTypeID { get; set; }
         public string message { get; set; }
         public string status { get; set; }
 

@@ -9,7 +9,6 @@
         public string phoneNumber { get; set; }
         public string role { get; set; }
 
-        public ICollection<Booking> Bookings { get; set; }
         public ICollection<Request> Requests { get; set; }
         public ICollection<Enrollment> Enrollment { get; set; }
 

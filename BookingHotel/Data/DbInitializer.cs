@@ -29,9 +29,9 @@ namespace BookingHotel.Data
 
             var rooms = new Room[]
             {
-                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, accountID=1},
-                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, accountID=2},
-                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, accountID=3}
+                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "trống"},
+                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "có khách"},
+                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "trống"}
             };
             hotelContext.Rooms.AddRange(rooms);
             hotelContext.SaveChanges();
@@ -76,20 +76,11 @@ namespace BookingHotel.Data
 
             var requests = new Request[]
             {
-                new Request {accountID= accounts.Single(s =>s.accountID ==1).accountID, dateCheckIn=DateTime.Parse("2024-05-15"),dateCheckOut=DateTime.Parse("2024-05-17"),roomType="Luxury",message="Không biết nói gì hết", status="Chưa duyệt" },
-                new Request {accountID= accounts.Single(s =>s.accountID ==2).accountID, dateCheckIn=DateTime.Parse("2024-03-12"),dateCheckOut=DateTime.Parse("2024-03-17"),roomType="Lite",message="Không biết nói gì hết", status="Chưa duyệt" },
-                new Request {accountID= accounts.Single(s =>s.accountID ==3).accountID, dateCheckIn=DateTime.Parse("2024-04-14"),dateCheckOut=DateTime.Parse("2024-04-17"),roomType="Lite",message="Không biết nói gì hết", status="Chưa duyệt" },
+                new Request {accountID= accounts.Single(s =>s.accountID ==1).accountID, dateCheckIn=DateTime.Parse("2024-05-15"),dateCheckOut=DateTime.Parse("2024-05-17"),roomTypeID=1, message="Không biết nói gì hết", status="Chưa duyệt" },
+                new Request {accountID= accounts.Single(s =>s.accountID ==2).accountID, dateCheckIn=DateTime.Parse("2024-03-12"),dateCheckOut=DateTime.Parse("2024-03-17"),roomTypeID=2, message="Không biết nói gì hết", status="Chưa duyệt" },
+                new Request {accountID= accounts.Single(s =>s.accountID ==3).accountID, dateCheckIn=DateTime.Parse("2024-04-14"),dateCheckOut=DateTime.Parse("2024-04-17"),roomTypeID=3, message="Không biết nói gì hết", status="Chưa duyệt" },
             };
             hotelContext.Requests.AddRange(requests);
-            hotelContext.SaveChanges();
-
-            var bookings = new Booking[]
-            {
-                new Booking {accountID= accounts.Single(s =>s.accountID ==1).accountID, dateCheckIn=DateTime.Parse("2024-05-15"),dateCheckOut=DateTime.Parse("2024-05-17"),roomType="Luxury",message="Không biết nói gì hết", status="Trống" },
-                new Booking {accountID= accounts.Single(s =>s.accountID ==2).accountID, dateCheckIn=DateTime.Parse("2024-03-12"),dateCheckOut=DateTime.Parse("2024-03-17"),roomType="Lite",message="Không biết nói gì hết", status="Có khách"},
-                new Booking {accountID= accounts.Single(s =>s.accountID ==3).accountID, dateCheckIn=DateTime.Parse("2024-04-14"),dateCheckOut=DateTime.Parse("2024-04-17"),roomType="Lite",message="Không biết nói gì hết", status="Trống" },
-            };
-            hotelContext.Bookings.AddRange(bookings);
             hotelContext.SaveChanges();
 
             var enrolllments = new Enrollment[]

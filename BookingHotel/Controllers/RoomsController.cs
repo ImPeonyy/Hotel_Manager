@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BookingHotel.Data;
 using BookingHotel.Models;
 using System.Diagnostics;
+using BookingHotel.Models.RoomViewModels;
 
 namespace BookingHotel.Controllers
 {
@@ -30,7 +31,7 @@ namespace BookingHotel.Controllers
             //return View(await _context.Rooms.ToListAsync());
         }
 
-        // GET: Rooms/Details/5
+        //GET: Rooms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Rooms == null)
@@ -53,6 +54,34 @@ namespace BookingHotel.Controllers
 
             return View(room);
         }
+
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.Rooms == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var viewModel = new RoomDetailData();
+        //    viewModel.Rooms =  await _context.Rooms
+        //        .Include(r => r.RoomType)
+        //        .Include(r => r.Enrollment)
+        //            .ThenInclude(r => r.Account)
+        //        .Include(r => r.Enrollment)
+        //            .ThenInclude(r => r.Account)   
+        //        .AsNoTracking()
+        //        .OrderBy(r => r.roomName)
+        //        .ToListAsync();
+
+        //    if (viewModel == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+
+
+        //    return View(viewModel);
+        //}
 
         // GET: Rooms/Create
         public IActionResult Create()
