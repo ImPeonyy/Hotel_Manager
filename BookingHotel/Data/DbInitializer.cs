@@ -86,7 +86,8 @@ namespace BookingHotel.Data
             var enrolllments = new Enrollment[]
             {
                 new Enrollment {roomID = rooms.Single(s => s.roomID== 1).roomID, accountID = accounts.Single(a => a.accountID ==1).accountID, dateOfReceipt=DateTime.Parse("2024-05-15")},
-                new Enrollment {roomID = rooms.Single(s => s.roomID== 3).roomID, accountID = accounts.Single(a => a.accountID ==2).accountID, dateOfReceipt=DateTime.Parse("2024-03-12")},new Enrollment {roomID = rooms.Single(s => s.roomID== 3).roomID, accountID = accounts.Single(a => a.accountID ==3).accountID, dateOfReceipt=DateTime.Parse("2024-04-04")}
+                new Enrollment {roomID = rooms.Single(s => s.roomID== 2).roomID, accountID = accounts.Single(a => a.accountID ==2).accountID, dateOfReceipt=DateTime.Parse("2024-03-12")},
+                new Enrollment {roomID = rooms.Single(s => s.roomID== 3).roomID, accountID = accounts.Single(a => a.accountID ==3).accountID, dateOfReceipt=DateTime.Parse("2024-04-04")}
             };
             hotelContext.Enrollments.AddRange(enrolllments);
             hotelContext.SaveChanges();

@@ -44,6 +44,9 @@ namespace BookingHotel.Controllers
             var room = await _context.Rooms
                 .Include(r => r.RoomType)
                     .ThenInclude(rt => rt.RoomTypeDetail)
+                .Include(r => r.Enrollment)
+                    .ThenInclude(a => a.Account)
+                        .ThenInclude(rq => rq.Requests)
                     .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.roomID == id);
 
