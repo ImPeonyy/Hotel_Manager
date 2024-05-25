@@ -1,11 +1,21 @@
-using BookingHotel.Data;
+﻿using BookingHotel.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<HotelContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.Cookie.Name = ".BookingHotel.Cookie";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Thiết lập thời gian timeout cho cookie
+        options.SlidingExpiration = true; // Cho phép cập nhật lại thời gian timeout khi có hoạt động từ người dùng
+    });
+builder.Services.AddHttpContextAccessor();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter(); 
@@ -53,12 +63,12 @@ using (var scope = app.Services.CreateScope())
 //        logger.LogError(ex, "An error occurred while seeding the database.");
 //    }
 //}
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

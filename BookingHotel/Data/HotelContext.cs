@@ -16,7 +16,6 @@ namespace BookingHotel.Data
         public DbSet<RoomTypeDetailImage> roomTypeDetailImages { get; set; }
         public DbSet<ComboSale> ComboSales { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
 
@@ -29,7 +28,6 @@ namespace BookingHotel.Data
             modelBuilder.Entity<RoomTypeDetailImage>().ToTable("RoomTypeDetailImage");
             modelBuilder.Entity<ComboSale>().ToTable("ComboSale");
             modelBuilder.Entity<Account>().ToTable("Account");
-            modelBuilder.Entity<Booking>().ToTable("Booking");
             modelBuilder.Entity<Request>().ToTable("Request");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
         }

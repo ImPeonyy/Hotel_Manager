@@ -1,0 +1,172 @@
+﻿@model PaginatedList<BookingHotel.Models.Request>
+
+@{
+    ViewData["Title"] = "Requests Management";
+}
+<div class="hero-wrap" style="background-image: url('@Url.Content("~/templateuser/images/bg_3_coppy.jpg")'); height:100px">
+
+</div>
+<style>
+    .btn-primary {
+        padding: 5px 10px;
+        font-size: 10px;
+        border-radius: 5px;
+    }
+
+    .btn-icon {
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+    .status-cancel {
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 3px;
+    }
+
+    .status-apply {
+        background-color: green;
+        color: white;
+        padding: 5px;
+        border-radius: 3px;
+    }
+
+    .status-waiting {
+        background-color: gray;
+        color: white;
+        padding: 5px;
+        border-radius: 3px;
+    }
+</style>
+<h1>Requests Management</h1>
+<form asp-controller="Request" asp-action="Index">
+    <p>
+        Search : <input type="text" name="SearchString" placeholder="Số điện thoại ..." style="height:25px" />
+        Status : <select id="statusFilter" name="statusFilter">
+            <option value="">All</option>
+            <option value="Waiting">Waiting</option>
+            <option value="Apply">Apply</option>
+            <option value="Cancel">Cancel</option>
+        </select> |
+        <button type="submit" class="btn-primary" style="display: inline-flex; align-items: center;">
+            <i class="fas fa-filter" style="margin-right: 5px;"></i> Filter
+        </button>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-statusFilter="@ViewData["StatusFilter"]">dateCheckIn</a></th>
+            <th>DateCheckOut</th>
+            <th>GuestCount</th>
+            <th>RoomType</th>
+            <th>Status</th>
+            <th>PhoneNumber</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="7">Không có kết quả tìm kiếm nào ...</td>
+            </tr>
+        }
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => request.dateCheckIn)</td>
+                <td>@Html.DisplayFor(modelItem => request.dateCheckOut)</td>
+                <td>@Html.DisplayFor(modelItem => request.guestCount)</td>
+                <td>@Html.DisplayFor(modelItem => request.RoomType.roomTypeName)</td>
+                <td>
+                    @if (request.status == "Cancelled")
+                    {
+                        <span class="status-cancel">@Html.DisplayFor(modelItem => request.status)</span>
+                    }
+                    else if (request.status == "Apply")
+                    {
+                        <span class="status-apply">@Html.DisplayFor(modelItem => request.status)</span>
+                    }
+                    else if (request.status == "Waiting")
+                    {
+                        <span class="status-waiting">@Html.DisplayFor(modelItem => request.status)</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => request.Account.phoneNumber)</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@request.requestID" class="btn btn-info btn-icon">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    @if (request.status == "Waiting")
+                    {
+                        <a asp-action="Approve" asp-route-id="@request.requestID" class="btn btn-success btn-icon" onclick="showSuccessMessage()">
+                            <i class="fas fa-check"></i>
+                        </a>
+                        <a asp-action="Cancel" asp-route-id="@request.requestID" class="btn btn-danger btn-icon" onclick="showDeleteMessage()">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+*@
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               asp-route-statusFilter="@ViewData["StatusFilter"]"
+               class="page-link">
+                Previous
+            </a>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               asp-route-statusFilter="@ViewData["StatusFilter"]"
+               class="page-link">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    function showSuccessMessage() {
+        alert("Yêu cầu đã được duyệt thành công!");
+    }
+    function showDeleteMessage() {
+        alert("Yêu cầu đã được hủy thành công");
+    }
+    function gotoPage(index) {
+        var url = '@Url.Action("Index", "Request")';
+        window.location.href = url + "?pageNumber=" + index;
+    }
+</script>
