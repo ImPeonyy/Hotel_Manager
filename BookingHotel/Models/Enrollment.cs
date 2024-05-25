@@ -2,7 +2,7 @@
 {
     public class Enrollment
     {
-        public int enrollmentID {  get; set; }
+        public int enrollmentID { get; set; }
         public int roomID { get; set; }
         public int accountID { get; set; }
         public DateTime dateOfReceipt { get; set; }

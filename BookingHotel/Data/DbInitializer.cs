@@ -73,12 +73,13 @@ namespace BookingHotel.Data
             };
             hotelContext.Accounts.AddRange(accounts);
             hotelContext.SaveChanges();
-
             var requests = new Request[]
             {
-                new Request {accountID= accounts.Single(s =>s.accountID ==1).accountID, dateCheckIn=DateTime.Parse("2024-05-15"),dateCheckOut=DateTime.Parse("2024-05-17"),roomTypeID=1, message="Không biết nói gì hết", status="Chưa duyệt" },
-                new Request {accountID= accounts.Single(s =>s.accountID ==2).accountID, dateCheckIn=DateTime.Parse("2024-03-12"),dateCheckOut=DateTime.Parse("2024-03-17"),roomTypeID=2, message="Không biết nói gì hết", status="Chưa duyệt" },
-                new Request {accountID= accounts.Single(s =>s.accountID ==3).accountID, dateCheckIn=DateTime.Parse("2024-04-14"),dateCheckOut=DateTime.Parse("2024-04-17"),roomTypeID=3, message="Không biết nói gì hết", status="Chưa duyệt" },
+
+                new Request {accountID= accounts.Single(s =>s.accountID ==1).accountID, dateCheckIn=DateTime.Parse("2024-05-15"),dateCheckOut=DateTime.Parse("2024-05-17"),roomTypeID=1, message="Không biết nói gì hết", status="Waiting" },
+                new Request {accountID= accounts.Single(s =>s.accountID ==2).accountID, dateCheckIn=DateTime.Parse("2024-03-12"),dateCheckOut=DateTime.Parse("2024-03-17"),roomTypeID=2, message="Không biết nói gì hết", status="Waiting" },
+                new Request {accountID= accounts.Single(s =>s.accountID ==3).accountID, dateCheckIn=DateTime.Parse("2024-04-14"),dateCheckOut=DateTime.Parse("2024-04-17"),roomTypeID=3, message="Không biết nói gì hết", status="Waiting" },
+
             };
             hotelContext.Requests.AddRange(requests);
             hotelContext.SaveChanges();
