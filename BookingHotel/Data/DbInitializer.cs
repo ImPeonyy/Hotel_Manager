@@ -29,9 +29,9 @@ namespace BookingHotel.Data
 
             var rooms = new Room[]
             {
-                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, accountID=1},
-                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, accountID=2},
-                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, accountID=3}
+                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "trống"},
+                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "có khách"},
+                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "trống"}
             };
             hotelContext.Rooms.AddRange(rooms);
             hotelContext.SaveChanges();
@@ -75,9 +75,11 @@ namespace BookingHotel.Data
             hotelContext.SaveChanges();
             var requests = new Request[]
             {
+
                 new Request {accountID= accounts.Single(s =>s.accountID ==1).accountID, dateCheckIn=DateTime.Parse("2024-05-15"),dateCheckOut=DateTime.Parse("2024-05-17"),roomTypeID=1, message="Không biết nói gì hết", status="Waiting" },
                 new Request {accountID= accounts.Single(s =>s.accountID ==2).accountID, dateCheckIn=DateTime.Parse("2024-03-12"),dateCheckOut=DateTime.Parse("2024-03-17"),roomTypeID=2, message="Không biết nói gì hết", status="Waiting" },
                 new Request {accountID= accounts.Single(s =>s.accountID ==3).accountID, dateCheckIn=DateTime.Parse("2024-04-14"),dateCheckOut=DateTime.Parse("2024-04-17"),roomTypeID=3, message="Không biết nói gì hết", status="Waiting" },
+
             };
             hotelContext.Requests.AddRange(requests);
             hotelContext.SaveChanges();
@@ -85,7 +87,8 @@ namespace BookingHotel.Data
             var enrolllments = new Enrollment[]
             {
                 new Enrollment {roomID = rooms.Single(s => s.roomID== 1).roomID, accountID = accounts.Single(a => a.accountID ==1).accountID, dateOfReceipt=DateTime.Parse("2024-05-15")},
-                new Enrollment {roomID = rooms.Single(s => s.roomID== 3).roomID, accountID = accounts.Single(a => a.accountID ==2).accountID, dateOfReceipt=DateTime.Parse("2024-03-12")},new Enrollment {roomID = rooms.Single(s => s.roomID== 3).roomID, accountID = accounts.Single(a => a.accountID ==3).accountID, dateOfReceipt=DateTime.Parse("2024-04-04")}
+                new Enrollment {roomID = rooms.Single(s => s.roomID== 2).roomID, accountID = accounts.Single(a => a.accountID ==2).accountID, dateOfReceipt=DateTime.Parse("2024-03-12")},
+                new Enrollment {roomID = rooms.Single(s => s.roomID== 3).roomID, accountID = accounts.Single(a => a.accountID ==3).accountID, dateOfReceipt=DateTime.Parse("2024-04-04")}
             };
             hotelContext.Enrollments.AddRange(enrolllments);
             hotelContext.SaveChanges();

@@ -1,10 +1,14 @@
 ﻿using BookingHotel.Data;
 using BookingHotel.Models;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+using Microsoft.EntityFrameworkCore;
+
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -13,6 +17,7 @@ namespace BookingHotel.Controllers
     //[Authorize]
     public class HomeController : Controller
     {
+
         private readonly ILogger<HomeController> _logger;
         private readonly HotelContext _context;
 
@@ -35,6 +40,7 @@ namespace BookingHotel.Controllers
         //    return View();
            
         //}
+
         public IActionResult Index()
         {
             var roomTypes = _context.RoomTypes.ToList();
@@ -103,13 +109,33 @@ namespace BookingHotel.Controllers
         {
             return View();
         }
-        public IActionResult OurRooms()
+        public async Task<IActionResult> OurRooms()
         {
-            return View();
+            var roomTypes = _context.RoomTypes
+            .Include(r => r.RoomTypeDetail)
+            .AsNoTracking();
+            return View(await roomTypes.ToListAsync());
         }
-        public IActionResult RoomDetail()
+        public async Task<IActionResult> RoomDetail(int? id)
         {
-            return View();
+
+            if (id == null || _context.RoomTypes == null)
+            {
+                return NotFound();
+            }
+
+            var roomTypes = await _context.RoomTypes
+            .Include(r => r.RoomTypeDetail)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(rt => rt.roomTypeID == id);
+            return View(roomTypes);
+
+            if (roomTypes == null)
+            {
+                return NotFound();
+            }
+
+            return View(roomTypes);
         }
         public IActionResult Contact()
         {

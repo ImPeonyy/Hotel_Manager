@@ -11,45 +11,47 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.roomName)
+            Tên phòng:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.roomName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.roomTypeID)
+            Tên khách hàng:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.roomTypeID)
+            @Html.DisplayFor(model => model.Enrollment.First().Account.name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.accountID)
+            Số điện thoại khách hàng:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.accountID)
+            @Html.DisplayFor(model => model.Enrollment.First().Account.phoneNumber)
         </dd>
+        <dt class="col-sm-2">
+            Số người: 
+        </dt>
         <dd class="col-sm-10">
-            
+            @Html.DisplayFor(model => model.Enrollment.First().Account.Requests.First().guestCount)
         </dd>
-        @* <dd class="col-sm-10">
-            <table class="table">
-                <tr>
-                    <th>Desciption</th>
-                    <th>Room Left</th>
-                </tr>
-                @foreach (var item in Model.)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoomTypeDetail.desciption)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.roomLeft)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </dd> *@
+        <dt class="col-sm-2">
+            Ngày nhận phòng:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Enrollment.First().Account.Requests.First().dateCheckIn)
+        </dd>
+        <dt class="col-sm-2">
+            Ngày trả phòng:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Enrollment.First().Account.Requests.First().dateCheckOut)
+        </dd>
+        <dt class="col-sm-2">
+            Thời gian nhận phòng:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Enrollment.First().dateOfReceipt)
+        </dd>
     </dl>
 </div>
 <div>
