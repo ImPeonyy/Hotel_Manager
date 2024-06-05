@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using static BookingHotel.Models.AccountViewModels;
 using System.Security.Principal;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookingHotel.Controllers
 {
@@ -73,7 +72,7 @@ namespace BookingHotel.Controllers
                     password = model.Password,
                     name = model.Name,
                     phoneNumber = model.PhoneNumber,
-                    role = "0"
+                    role = "User"
                 };
                 
                 _context.Accounts.Add(account);
@@ -102,12 +101,23 @@ namespace BookingHotel.Controllers
                 var account = _context.Accounts.FirstOrDefault(a => a.username == model.Username && a.password == model.Password);
                 if (account != null)
                 {
-                    var role = account.role;
+                    //var claims = new[]
+                    //{
+                    //    new Claim(ClaimTypes.Name, model.Username),
+                    //};
+
+                    //var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    //var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    //await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+
+                    //return RedirectToAction("Index", "Home");
+
                     List<Claim> claims = new List<Claim>()
                     {
                         new Claim (ClaimTypes.NameIdentifier,model.Username),
                         new Claim(ClaimTypes.Name, model.Username),
-                        new Claim(ClaimTypes.Role, role.ToString()),
+                        new Claim("OtherProperties","Examole Role")
                     };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     AuthenticationProperties properties = new AuthenticationProperties()
@@ -131,37 +141,5 @@ namespace BookingHotel.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-        [HttpGet]
-        public IActionResult UserProfile()
-        {
-            // Lấy tên người dùng từ Claims
-            string username = HttpContext.User.Identity.Name;
-
-            // Tìm kiếm thông tin tài khoản trong cơ sở dữ liệu
-            var account = _context.Accounts.FirstOrDefault(a => a.username == username);
-
-            if (account == null)
-            { 
-                return RedirectToAction("Index", "Home"); 
-            }
-
-            var requests = _context.Requests
-            .Where(r => r.accountID == account.accountID)
-            .Include(r => r.RoomType)
-            .OrderByDescending(r => r.dateCheckIn)
-            .ToList();
-            var model = new UserProfileViewModel
-            {
-                Username = username,
-                Name = account.name,
-                PhoneNumber = account.phoneNumber,
-                Requests = requests
-            };   
-            return View(model);
-        }
-
-       
     }
-
 }
-
