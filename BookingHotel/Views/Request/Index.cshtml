@@ -2,10 +2,11 @@
 
 @{
     ViewData["Title"] = "Requests Management";
+    Layout = "_ManagementLayout";
 }
-<div class="hero-wrap" style="background-image: url('@Url.Content("~/templateuser/images/bg_3_coppy.jpg")'); height:100px">
 
-</div>
+
+
 <style>
     .btn-primary {
         padding: 5px 10px;
@@ -115,7 +116,7 @@
                     </a>
                     @if (request.status == "Waiting")
                     {
-                        <a asp-action="Approve" asp-route-id="@request.requestID" class="btn btn-success btn-icon" onclick="showSuccessMessage()">
+                        <a asp-action="Approve" asp-route-id="@request.requestID" class="btn btn-success btn-icon" >
                             <i class="fas fa-check"></i>
                         </a>
                         <a asp-action="Cancel" asp-route-id="@request.requestID" class="btn btn-danger btn-icon" onclick="showDeleteMessage()">
@@ -159,14 +160,14 @@
 </nav>
 
 <script>
-    function showSuccessMessage() {
-        alert("Yêu cầu đã được duyệt thành công!");
-    }
+    //function showSuccessMessage() {
+    //    alert("The request has been approved successfully!!!");
+    //}
     function showDeleteMessage() {
-        alert("Yêu cầu đã được hủy thành công");
+        alert("The request has been canceled successfully!!!");
     }
-    function gotoPage(index) {
-        var url = '@Url.Action("Index", "Request")';
-        window.location.href = url + "?pageNumber=" + index;
-    }
+    //function gotoPage(index) {
+    //    var url = '@Url.';
+    //    window.location.href = url + "?pageNumber=" + index;
+    //}
 </script>

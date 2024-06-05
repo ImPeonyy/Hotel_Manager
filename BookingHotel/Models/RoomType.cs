@@ -10,5 +10,6 @@ namespace BookingHotel.Models
 
         public ICollection<Room> Rooms { get; set; }
         public RoomTypeDetail RoomTypeDetail { get; set; }
+        public ICollection<Request> Bookings { get; set; }
     }
 }

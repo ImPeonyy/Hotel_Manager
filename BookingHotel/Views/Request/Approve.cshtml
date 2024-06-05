@@ -1,0 +1,59 @@
+﻿@model ApproveViewModel
+@{
+    Layout = "_ManagementLayout";
+}
+<h2>Approve the request</h2>
+
+<div>
+    <h4>Requested information</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.RoomType.roomTypeName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.RoomType.roomTypeName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.dateCheckIn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.dateCheckIn)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Request.dateCheckOut)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Request.dateCheckOut)
+        </dd>
+    </dl>
+</div>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<div class="container-sm  mb-3 ml-3">
+    <form asp-action="ConfirmApprove" method="post" class="needs-validation" novalidate style="width: 300px;">
+        <input type="hidden" name="requestId" value="@Model.Request.requestID" />
+
+        <div class="form-group">
+            <label for="roomId">Chọn phòng:</label>
+            <select name="roomId" id="roomId" class="form-control" required>
+                <option value="">Chọn phòng</option>
+                @foreach (var room in Model.AvailableRooms)
+                {
+                    <option value="@room.roomID">@room.roomName</option>
+                }
+            </select>
+            <div class="invalid-feedback">Vui lòng chọn một phòng.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Approve</button>
+    </form>
+</div>

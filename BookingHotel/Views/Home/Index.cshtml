@@ -18,11 +18,33 @@
         
         margin-left : 55%
     }
-/*    #checkout_date,
-    #checkin_date,
-    #message{
-        border: 1px solid #000 !important;
-    }*/
+
+    .wrap input.form-control,
+    .select-wrap select.form-control
+    {
+        border: 1px solid #C0C0C0 !important;
+        width : 320px;
+        border-radius: 4px !important;
+        box-shadow: none !important; 
+        padding-left :10px;
+    }
+
+    /*.select-wrap select.form-control {
+        border: 1px solid #C0C0C0 !important;
+        width : 320px;
+        border-radius: 4px !important;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    */
+    .wrap textarea.form-control {
+        border: 1px solid #c0c0c0 !important;
+       
+        border-radius: 4px !important;
+        box-shadow: none !important;
+        padding-left: 10px;
+    }
+
 
 </style>
 
@@ -68,7 +90,7 @@
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
                                     <label for="checkin_date">Check-in Date</label>
-                                    <input asp-for="dateCheckIn" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
+                                    <input asp-for="dateCheckIn" id="checkin_date" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +98,7 @@
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
                                     <label for="checkout_date">Check-out Date</label>
-                                    <input asp-for="dateCheckOut" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut"  required>
+                                    <input asp-for="dateCheckOut" id="checkout_date" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut" required>
                                 </div>
                             </div>
                         </div>
@@ -87,17 +109,17 @@
                                     <div class="form-field">
                                         <div class="select-wrap">
                                             <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                            <select asp-for="RoomType" id="room_type" name="roomTypeID" class="form-control form-control-lg" required>
+                                            <select asp-for="RoomType" id="room_type" name="roomTypeID" class="form-control form-control-lg" required onchange="updateGuestCount()">
                                                 <option value="">Room Type</option>
                                                 @foreach (var item in ViewBag.RoomTypeViewModels)
                                                 {
                                                     if (item.RoomLeft > 0)
                                                     {
-                                                        <option value="@item.Value">@item.Text</option>
+                                                        <option value="@item.Value" data-max-people="@item.MaxPeople">@item.Text</option>
                                                     }
                                                     else
                                                     {
-                                                        <option value="@item.Value" disabled>@item.Text (No available rooms)</option>
+                                                        <option value="@item.Value" data-max-people="@item.MaxPeople" disabled>@item.Text (No available rooms)</option>
                                                     }
                                                 }
                                             </select>
@@ -110,21 +132,11 @@
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
                                     <label for="guest_count">Guests</label>
-                                    <div class="form-field">
-                                        <div class="select-wrap">
-                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                            <select asp-for="guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" required>
-                                                @foreach (var item in ViewBag.RoomTypeDetails)
-                                                {
-                                                    int numberOfAdults = int.Parse(item.Text);
-                                                    <option value="@item.Value">@item.Text @(numberOfAdults > 1 ? "Adults" : "Adult")</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <input asp-for="guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" readonly required>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-12 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
@@ -133,6 +145,12 @@
                                 </div>
                             </div>
                         </div>
+                        @if (TempData["Message"] != null)
+                        {
+                            <div class="alert alert-info">
+                                @TempData["Message"]
+                            </div>
+                        }
                         <div class="col-md-8">
                             <div class="form-group d-flex align-self-stretch">
                                 <button type="submit" id="btn" class="btn btn-primary py-5 py-md-3 px-5 align-self-stretch d-block">
@@ -141,14 +159,35 @@
                             </div>
                         </div>
                     </div>
+                    
                 </form>
             </div>
         </div>
     </div>
 
 </section>
+                        
+                        <script>
+                            function updateGuestCount() {
+                                var roomTypeSelect = document.getElementById("room_type");
+                                var selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+                                var maxPeople = selectedOption.getAttribute("data-max-people");
 
-
+                                var guestCountInput = document.getElementById("guest_count");
+                                guestCountInput.value = maxPeople;
+                                //guestCountInput.disabled = true;
+                            }
+                            //function success(){
+                            //    var checkinDate = document.getElementById("checkin_date").value;
+                            //    var checkoutDate = document.getElementById("checkout_date").value;
+                            //    var roomType = document.getElementById("room_type").value;
+                            //    var guestCount = document.getElementById("guest_count").value;
+                            //    if (checkinDate && checkoutDate && roomType && guestCount ){
+                            //          alert("Booking successful. Please keep an eye on your phone, staff will contact you as soon as possible");
+                            //    }
+                                
+                            //}
+                        </script>
 
     <section class="ftco-section">
         <div class="container">
