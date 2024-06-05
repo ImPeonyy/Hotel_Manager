@@ -9,6 +9,7 @@ using BookingHotel.Data;
 using BookingHotel.Models;
 using System.Diagnostics;
 using BookingHotel.Models.RoomViewModels;
+using Microsoft.Data.SqlClient;
 
 namespace BookingHotel.Controllers
 {
@@ -22,12 +23,38 @@ namespace BookingHotel.Controllers
         }
 
         // GET: Rooms
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var rooms = _context.Rooms
+            ViewData["RoomTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "roomType_desc" : "";
+            ViewData["StatusSortParm"] = String.IsNullOrEmpty(sortOrder) ? "status_desc" : "status";
+            ViewData["CurrentFilter"] = searchString;
+
+            var rooms = from r in _context.Rooms select r;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                rooms = rooms.Where(s => s.roomName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "roomType_desc":
+                    rooms = rooms.OrderByDescending(r => r.roomTypeID);
+                    break;
+                case "status_desc":
+                    rooms = rooms.OrderByDescending(r => r.status);
+                    break;
+                case "status":
+                    rooms = rooms.OrderBy(r => r.status);
+                    break;
+                default:
+                    rooms = rooms.OrderBy(r => r.roomName);
+                    break;
+            }
+
+            return View(await rooms
             .Include(r => r.RoomType)
-            .AsNoTracking();
-            return View(await rooms.ToListAsync());
+            .AsNoTracking().ToListAsync());
             //return View(await _context.Rooms.ToListAsync());
         }
 
