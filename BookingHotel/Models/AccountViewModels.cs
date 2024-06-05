@@ -35,5 +35,12 @@ namespace BookingHotel.Models
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }
+        public class UserProfileViewModel
+        {
+            public string Username { get; set; }
+            public string Name { get; set; }
+            public string PhoneNumber { get; set; }
+            public List<Request> Requests { get; set; }
+        }
     }
 }

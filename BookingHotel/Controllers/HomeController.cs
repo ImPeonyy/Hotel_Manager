@@ -36,30 +36,27 @@ namespace BookingHotel.Controllers
         //        ViewBag.RoomTypes = roomTypeList;
         //    }
 
-           
+
         //    return View();
-           
+
         //}
 
         public IActionResult Index()
         {
-            var roomTypes = _context.RoomTypes.ToList();
+            var roomTypes = _context.RoomTypes.Include(rt => rt.RoomTypeDetail).ToList();
             var roomTypeViewModels = roomTypes.Select(rt => new RoomTypeViewModel
             {
                 Value = rt.roomTypeID,
                 Text = rt.roomTypeName,
-                RoomLeft = rt.roomLeft
+                RoomLeft = rt.roomLeft,
+                MaxPeople = rt.RoomTypeDetail?.maxPeople ?? 0 
             }).ToList();
 
             ViewBag.RoomTypeViewModels = roomTypeViewModels;
-            var roomTypesDeital = _context.RoomTypeDetails.ToList();
-            if (roomTypesDeital.Any())
-            {
-                var guestCount = new SelectList(roomTypesDeital, "maxPeople", "maxPeople");
-                ViewBag.RoomTypeDetails = guestCount;
-            }
+
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Booking(Request model)
@@ -70,22 +67,35 @@ namespace BookingHotel.Controllers
                 if (username != null)
                 {
                     var user = _context.Accounts.FirstOrDefault(u => u.username == username);
-                    //var roomType = _context.RoomTypes.FirstOrDefault(r => r.roomTypeID == model.roomType)?.roomTypeName;
-                    // accountIdValue chứa giá trị accountID
-                    // Thêm logic để lưu yêu cầu vào cơ sở dữ liệu
-                    var request = new Request
-                    {
-                        accountID = user.accountID,
-                        dateCheckIn = model.dateCheckIn,
-                        dateCheckOut = model.dateCheckOut,
-                        guestCount = model.guestCount,
-                        roomTypeID = model.roomTypeID,
-                        message = model.message,
-                        status = "Waiting"
-                    };
+                    var roomType = _context.RoomTypes.FirstOrDefault(rt => rt.roomTypeID == model.roomTypeID);
 
-                    _context.Requests.Add(request);
-                    _context.SaveChanges();
+                    if (roomType != null && roomType.roomLeft > 0)
+                    {
+                        var request = new Request
+                        {
+                            accountID = user.accountID,
+                            dateCheckIn = model.dateCheckIn,
+                            dateCheckOut = model.dateCheckOut,
+                            guestCount = model.guestCount,
+                            roomTypeID = model.roomTypeID,
+                            message = model.message,
+                            status = "Waiting"
+                        };
+
+                        _context.Requests.Add(request);
+
+                        // Update the roomLeft count
+                        roomType.roomLeft -= 1;
+
+                        _context.SaveChanges();
+
+                        TempData["Message"] = "Booking successful. Please keep an eye on your phone, staff will contact you as soon as possible.";
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No rooms available for the selected type.";
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -100,6 +110,7 @@ namespace BookingHotel.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
 
 
 
