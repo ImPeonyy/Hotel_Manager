@@ -29,10 +29,9 @@ namespace BookingHotel.Data
 
             var rooms = new Room[]
             {
-                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"},
-                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "Occupied"},
-                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "Empty"},
-                new Room{roomName="104", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"}
+                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "trống"},
+                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "có khách"},
+                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "trống"}
             };
             hotelContext.Rooms.AddRange(rooms);
             hotelContext.SaveChanges();

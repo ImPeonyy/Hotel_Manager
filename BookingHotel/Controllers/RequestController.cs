@@ -60,70 +60,42 @@ namespace BookingHotel.Controllers
         // Action method để hiển thị chi tiết yêu cầu
         public IActionResult Details(int id)
         {
-            var request = _context.Requests.Include(r => r.Account)
-                .ThenInclude(r => r.Enrollment)
-                .ThenInclude(e => e.Room)
-                .Include(r => r.RoomType).FirstOrDefault(r => r.requestID == id);
+            var request = _context.Requests.Include(r => r.Account).Include(r => r.RoomType).FirstOrDefault(r => r.requestID == id);
             if (request == null)
             {
                 return NotFound();
             }
             return View(request);
         }
-        public IActionResult Approve(int id)
-        {
-            // Lấy thông tin request và danh sách phòng thỏa mãn điều kiện
-            var request = _context.Requests.Include(r => r.RoomType).FirstOrDefault(r => r.requestID == id);
-            if (request == null)
-            {
-                return NotFound();
-            }
-
-            var availableRooms = _context.Rooms
-                .Where(r => r.roomTypeID == request.roomTypeID && r.status == "Empty")
-                .ToList();
-
-            // Tạo View Model để truyền dữ liệu ra View
-            var viewModel = new ApproveViewModel
-            {
-                Request = request,
-                AvailableRooms = availableRooms
-            };
-
-            return View(viewModel);
-        }
 
         // Action method để duyệt yêu cầu
-        [HttpPost]
-        public IActionResult ConfirmApprove(int requestId, int roomId)
-        {
-            // Lấy request và room dựa trên ID
-            var request = _context.Requests.FirstOrDefault(r => r.requestID == requestId);
-            var room = _context.Rooms.FirstOrDefault(r => r.roomID == roomId);
+        public IActionResult Approve(int id)
+        { 
+            var request = _context.Requests.FirstOrDefault(r => r.requestID == id);
+            var accountid = request.accountID;
 
-            if (request == null || room == null)
-            {
-                return NotFound(); 
-            }
+            var roomType = request.roomTypeID;
 
-            // Tạo và lưu Enrollment 
+            var room = _context.Rooms.FirstOrDefault(r => r.roomTypeID == roomType && r.RoomType.roomLeft > 0);
+
+            var rt = _context.RoomTypes.FirstOrDefault(r => r.roomTypeID == roomType);
+            rt.roomLeft--;
             var enrollment = new Enrollment
             {
-                accountID = request.accountID,
-                roomID = roomId,
-                dateOfReceipt = DateTime.Now
+                accountID = accountid,
+                roomID = room.roomID,
+                dateOfReceipt = DateTime.Now,
+
             };
-
+            
             _context.Enrollments.Add(enrollment);
-
-            // Cập nhật trạng thái request và phòng
             request.status = "Apply";
-            room.status = "Occupied";
 
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
+
 
         // Action method để hủy yêu cầu
         public IActionResult Cancel(int id)
@@ -133,12 +105,6 @@ namespace BookingHotel.Controllers
             {
                 return NotFound();
             }
-            var roomType = _context.RoomTypes.FirstOrDefault(rt => rt.roomTypeID == request.roomTypeID);
-            if (roomType != null)
-            {              
-                roomType.roomLeft += 1;
-            }
-
 
             request.status = "Cancelled";
             _context.SaveChanges();
