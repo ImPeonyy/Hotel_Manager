@@ -30,7 +30,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Harbor<span>Lights</span></a>
+            <a class="navbar-brand" href="index.html">Im<span></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="oi oi-menu"></span> Menu
             </button>
@@ -44,11 +44,9 @@
                         <a asp-area="" asp-controller="Home" asp-action="OurRooms" class="nav-link">Our Rooms</a>
                     </li>
 
-                    <li class="nav-item"><a asp-controller="Home" asp-action="Restaurant" class="nav-link">Restaurant</a></li>
-                    <li class="nav-item"><a asp-controller="Rooms" asp-action="index" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a href="restaurant.html" class="nav-link">Restaurant</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                     <li class="nav-item"><a asp-controller="Home" asp-action="Blog" class="nav-link">Blog</a></li>
-                    <li class="nav-item"><a asp-controller="RoomTypes" asp-action="index" class="nav-link">RoomTypes</a></li>
-                    <li class="nav-item"><a asp-controller="RoomTypeDetails" asp-action="index" class="nav-link">RoomTypeDetails</a></li>
                     @*<li class="nav-item"><a asp-controller="Home" asp-action="LogOut" class="nav-link">LogOut</a></li>*@
 
                     @if (User.Identity.IsAuthenticated)
@@ -169,6 +167,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="~/TemplateUser/js/google-map.js"></script>
     <script src="~/TemplateUser/js/main.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

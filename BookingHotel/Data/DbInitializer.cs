@@ -20,70 +20,27 @@ namespace BookingHotel.Data
 
             var roomTypes = new RoomType[]
             {
-                new RoomType{roomTypeName="King Room", roomLeft=5},
-                new RoomType{roomTypeName="Suite Room", roomLeft=5},
-                new RoomType{roomTypeName="Family Room", roomLeft=5},
-                new RoomType{roomTypeName="Deluxe Room", roomLeft=5},
-                new RoomType{roomTypeName="Luxury Room", roomLeft=5},
-                new RoomType{roomTypeName="Superior Room", roomLeft=5}
+                new RoomType{roomTypeName="Luxury", roomLeft=10},
+                new RoomType{roomTypeName="Vip", roomLeft=10},
+                new RoomType{roomTypeName="Lite", roomLeft=10}
             };
             hotelContext.RoomTypes.AddRange(roomTypes);
             hotelContext.SaveChanges();
 
             var rooms = new Room[]
             {
-                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"},
-                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"},
-                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "Empty"},
-                new Room{roomName="104", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "Empty"},
-                new Room{roomName="105", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "Empty"},
-
-                new Room{roomName="201", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"},
-                new Room{roomName="202", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "Empty"},
-                new Room{roomName="203", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "Empty"},
-                new Room{roomName="204", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "Empty"},
-                new Room{roomName="205", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"},
-
-                new Room{roomName="301", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "Empty"},
-                new Room{roomName="302", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "Empty"},
-                new Room{roomName="303", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "Empty"},
-                new Room{roomName="304", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "Empty"},
-                new Room{roomName="305", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "Empty"},
-
-                new Room{roomName="401", roomTypeID=roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, status = "Empty"},
-                new Room{roomName="402", roomTypeID=roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, status = "Empty"},
-                new Room{roomName="403", roomTypeID=roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, status = "Empty"},
-                new Room{roomName="404", roomTypeID=roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, status = "Empty"},
-                new Room{roomName="405", roomTypeID=roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, status = "Empty"},
-
-                new Room{roomName="501", roomTypeID=roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, status = "Empty"},
-                new Room{roomName="502", roomTypeID=roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, status = "Empty"},
-                new Room{roomName="503", roomTypeID=roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, status = "Empty"},
-                new Room{roomName="504", roomTypeID=roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, status = "Empty"},
-                new Room{roomName="505", roomTypeID=roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, status = "Empty"},
-
-                new Room{roomName="601", roomTypeID=roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, status = "Empty"},
-                new Room{roomName="602", roomTypeID=roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, status = "Empty"},
-                new Room{roomName="603", roomTypeID=roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, status = "Empty"},
-                new Room{roomName="604", roomTypeID=roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, status = "Empty"},
-                new Room{roomName="605", roomTypeID=roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, status = "Empty"},
-
+                new Room{roomName="101", roomTypeID=roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, status = "trống"},
+                new Room{roomName="102", roomTypeID=roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, status = "có khách"},
+                new Room{roomName="103", roomTypeID=roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, status = "trống"}
             };
             hotelContext.Rooms.AddRange(rooms);
             hotelContext.SaveChanges();
 
             var roomTypeDetails = new RoomTypeDetail[]
             {
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, description="With views of the city, this luxurious room has been designed with a refreshing palette of nature-inspired green tones infused with subtle local touches.", 
-                    maxPeople=2, view="City View", size="32", bed=1},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, description="With views spanning over the cityscape, this spacious room features two double beds and an elegant bathroom with a rain shower and luxurious bath.", 
-                    maxPeople=2, view="City View", size="32", bed=2},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, description="Phong dep lam nha 3", maxPeople=4, view="Garden View", size="32", bed=2},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, description="Floor-to-ceiling windows overlooking the city, this spacious room comes complete with a private balcony and an elegant bathroom, featuring a rain shower and luxurious bath.",
-                    maxPeople=3, view="Beach View", size="64", bed=1},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, description="Phong dep lam nha 2", maxPeople=3, view="Beach View", size="96", bed=1},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, description="Boasting panoramic vistas of Marina Bay and Singapore's skyline through its floor-to-ceiling windows, this beautifully appointed room features a cool blue colour palette and includes exclusive lounge access.", 
-                    maxPeople=2, view="Beach View", size="128", bed=1},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, description="Phong dep lam nha 1", maxPeople=1, view="Beach", size="44,1", bed=2},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, description="Phong dep lam nha 2", maxPeople=2, view="Beach", size="44,1", bed=2},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, description="Phong dep lam nha 3", maxPeople=3, view="Beach", size="44,1", bed=2},
             };
             hotelContext.RoomTypeDetails.AddRange(roomTypeDetails);
             hotelContext.SaveChanges();
