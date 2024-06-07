@@ -20,9 +20,22 @@ namespace BookingHotel.Data
 
             var roomTypes = new RoomType[]
             {
-                new RoomType{roomTypeName="Luxury", roomLeft=10},
-                new RoomType{roomTypeName="Vip", roomLeft=10},
-                new RoomType{roomTypeName="Lite", roomLeft=10}
+                new RoomType{roomTypeName="OceanFront Room", roomLeft=4},
+                new RoomType{roomTypeName="City View Room", roomLeft=1},
+                new RoomType{roomTypeName="Surf Club Room", roomLeft=1},
+                new RoomType{roomTypeName="Bay-View Room", roomLeft=1},
+                new RoomType{roomTypeName="Ocean Bungalow", roomLeft=1},
+                new RoomType{roomTypeName="Ocean-View Corner Studio", roomLeft=1},
+                new RoomType{roomTypeName="Bay-View Corner Studio", roomLeft=1},
+                new RoomType{roomTypeName="OceanFront Four Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="Marybelle Penthouse Suite", roomLeft=1},
+                new RoomType{roomTypeName="Bay-View One Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="OceanFront One Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="OceanFront Two Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="Bay-View Two Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="Surf Club One Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="City-View Two Bedroom Suite", roomLeft=1},
+                new RoomType{roomTypeName="OceanFront Accessible Room", roomLeft=1},
             };
             hotelContext.RoomTypes.AddRange(roomTypes);
             hotelContext.SaveChanges();
@@ -38,9 +51,59 @@ namespace BookingHotel.Data
 
             var roomTypeDetails = new RoomTypeDetail[]
             {
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, description="Phong dep lam nha 1", maxPeople=1, view="Beach", size="44,1", bed=2},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, description="Phong dep lam nha 2", maxPeople=2, view="Beach", size="44,1", bed=2},
-                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, description="Phong dep lam nha 3", maxPeople=3, view="Beach", size="44,1", bed=2},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 1).roomTypeID, 
+                    description="With a focus on the shimmering Surfside beach and Atlantic Ocean through a full wall of windows, our oceanfront hotel and " +
+                    "rooms let you enjoy the panoramic coastline not only from your furnished balcony, but also from the luxurious, spacious interior for " +
+                    "true indoor-outdoor living.", maxPeople=3, view="Ocean view", size="645 to 735 sq. ft. (60 to 68 m2). 5th to 12th floors", bed= "One king or two double beds, One crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 2).roomTypeID, 
+                    description="Perched above iconic Collins Avenue, our City-View Rooms allow you to enjoy streetscape views from the quiet comfort of a " +
+                    "luxurious guest room filled with natural light through a full wall of windows.", maxPeople=3, view="City view", size="600 sq. ft. (56 m2). 5th to 7th floors", bed="One king bed, One Rollaway or One Crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 3).roomTypeID, 
+                    description="If you expect to be spending most of your time exploring Surfside’s beautiful beach and Miami’s vibrant culture, our Surf " +
+                    "Club Room is the ideal option for experiencing the luxury of Four Seasons Hotel at The Surf Club, Surfside, at maximum value.", maxPeople=2, view="Surrounding grounds and courtyard", size="435 sq. ft. (40 m2). 5th to 12th floors", bed="One king bed, One crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 4).roomTypeID, 
+                    description="Located on the upper floors of the Hotel, offering a panoramic view of the city skyline through a full wall of windows, " +
+                    "spacious Bay-View Rooms are a calming oasis during your stay at Surfside.", maxPeople=3, view="Biscayne Bay and Downtown Miami", size="600 sq. ft. (56 m2). Hotel Tower, Floors 8–12", bed="One king bed, One crib or rollaway"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 5).roomTypeID, 
+                    description="With privileged beach and pool views, our Ocean Bungalows are luxurious hideaways located on the second floor of The Surf " +
+                    "Club’s legendary Cabana Row. From the earliest years, original architect Russell Pancost instinctively understood that these sun sanctuaries " +
+                    "would always remain the true soul of The Surf Club.", maxPeople=2, view="Ocean view", size="415 sq. ft. (39 m2). 2nd floor", bed="One king bed, One crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 6).roomTypeID, 
+                    description="Take in the most stunning sights from our Ocean-View Corner Studios. Wake up to a breathtaking panoramic vista of the shimmering " +
+                    "Atlantic Ocean through a full wall of windows, and in the evenings, enjoy a glass of wine on the wraparound corner balcony that looks " +
+                    "out over the city skyline.", maxPeople=3, view="Ocean view", size="700 sq. ft. (65 m2). 5th to 12th floors", bed="One king bed, One rollaway or one crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 7).roomTypeID, 
+                    description="Offering a panoramic view of the city skyline through a full wall of windows, spacious Bay-View Corner Studios are a calming " +
+                    "oasis during your stay in Surfside.", maxPeople=3, view="City view", size="735 sq. ft. (68 m2). 5th to 12th floors", bed="One king bed, One rollaway or one crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 8).roomTypeID, 
+                    description="Step out of a dedicated elevator and walk into your Oceanfront Four Bedroom Suite to enjoy indoor-outdoor living as it’s " +
+                    "meant to be lived.", maxPeople=9, view="Ocean and city", size="4328 sq. ft. (402 m2). 3rd and 4th floors, Hotel Residence Tower", bed="Two king beds and two queen beds, One rollaway or one crib upon request"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 9).roomTypeID, 
+                    description="Named after the yacht where Harvey Firestone and his peers discovered the land on which to build The Surf Club, the Marybelle " +
+                    "is our largest, most exclusive suite. Soak in unimpeded sunset views from four bedrooms, your private rooftop pool and terrace or the " +
+                    "expansive living spaces designed by Joseph Dirand.", maxPeople=8, view="Ocean and city", size="7,200 sq. ft. (668 m2). Hotel Residence Tower", bed="Two king beds, one queen bed and one twin bed, One rollaway"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 10).roomTypeID, 
+                    description="Unwind in South Florida style in our Bay-View One-Bedroom Suites, where spacious accommodations and Joseph Dirand signature " +
+                    "kitchens and bathrooms make it easy to feel at home during your stay in Miami.", maxPeople=3, view="Bay view", size="1400 sq. ft. (130 m2). 4th to 10th floors", bed="One king bed, One rollaway or crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 11).roomTypeID, 
+                    description="For home-away-from-home comforts and stunning views of the Atlantic Ocean, our Oceanfront One Bedroom Suites are your ideal " +
+                    "accommodations.", maxPeople=4, view="Ocean view", size="1800 sq. ft. (167 m2). 5th to 10th floors", bed="King bed, Sofabed and crib upon request"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 12).roomTypeID, 
+                    description="Step out from your dedicated elevator and walk into our oceanfront two bedroom suites to enjoy indoor outdoor living as its " +
+                    "meant to be lived.", maxPeople=5, view="Ocean view", size="2000 sq. ft. (186 m2). 7th to 10th floors", bed="Two king beds, One rollaway or crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 13).roomTypeID, 
+                    description="Feel at home in the Miami Beaches in our spacious Bay-View Two-Bedroom suites, from the full designer kitchen to the furnished " +
+                    "balcony, perfect for taking in sunset views over the bay.", maxPeople=5, view="Bay view", size="1800 sq. ft. (167 m2). 4th to 10th floors", bed="One King Bed and One Queen Bed, One rollaway or crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 14).roomTypeID, 
+                    description="Enjoy the comforts of home in South Florida style with custom accommodations by Joseph Dirand, including a white marble bathroom " +
+                    "and gourmet kitchenette.", maxPeople=3, view="Local Town of Surfside", size="965 sq. ft. (89.65 m2). Hotel Residence Tower 4th floor", bed="One king bed, One rollaway or crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 15).roomTypeID, 
+                    description="Feel at home in these spacious two-bedroom suites overlooking the city.", 
+                    maxPeople=5, view="City view", size="1800 sq. ft. (167 m2). Floors 4 and 5", bed="One King Bed and One Queen Bed, One rollaway or crib"},
+                new RoomTypeDetail{roomTypeID = roomTypes.Single(s => s.roomTypeID == 16).roomTypeID, 
+                    description="With a focus on the shimmering Atlantic Ocean through a full wall of windows, our Oceanfront Accessible Rooms let you enjoy the " +
+                    "panoramic coastline not only from your furnished balcony, but also from the luxurious, spacious interior for true indoor-outdoor living.", 
+                    maxPeople=3, view="Ocean view", size="645 to 735 sq. ft. (60 to 68 m2)\r\n6th to 7th floors", bed="Two double beds, One crib"},
             };
             hotelContext.RoomTypeDetails.AddRange(roomTypeDetails);
             hotelContext.SaveChanges();
