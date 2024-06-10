@@ -2,7 +2,7 @@
     Layout = null;
 }
 
-@model BookingHotel.Models.AccountViewModels.LoginViewModel
+@model BookingHotel.Models.AccountViewModels
 <style>
     .box {
         margin-bottom: 40px;
@@ -13,7 +13,11 @@
         border: 1px solid #ccc; 
         border-radius: 10px;
     }
-
+        .wrap-login100 {
+    width: 80%; /* Chiều rộng của form */
+    max-width: 500px; /* Độ rộng tối đa */
+    height:630px;
+    }
    
     .form-control {
         width: 100%; 
@@ -115,7 +119,7 @@
 
                        <div class="register-link">
                     <label>
-                        Bạn chưa có tài khoản? <a asp-controller="Account" asp-action="Register" class="register-link-text">Đăng kí tài khoản</a>
+                            You haven't an account?<a asp-controller="Account" asp-action="Register" class="register-link-text"> Register</a>
                     </label>
                     </div>
                     <div class="container-login100-form-btn">
@@ -124,11 +128,11 @@
                         </button>
                     </div>
 
-                    @if (!ViewData.ModelState.IsValid)
+                    @if (TempData["ErrorMessage"] != null)
                     {
-                        <div class="alert alert-danger mt-3" role="alert">
-                            <strong>Error!</strong> @Html.ValidationSummary()
-                        </div>
+                            <div class="alert alert-danger" style="margin-top:10px">
+                            @TempData["ErrorMessage"]
+                            </div>
                     }
                 </form>
             </div>

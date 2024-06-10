@@ -18,8 +18,7 @@ namespace BookingHotel.Controllers
         private readonly HotelContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public object AllowRefresh { get; private set; }
-        public bool IsPersistent { get; private set; }
+
 
         public AccountController(HotelContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -34,7 +33,7 @@ namespace BookingHotel.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        public IActionResult Register([Bind("Username,Password,ConfirmPassword,Name,PhoneNumber")] AccountViewModels model)
         {
             if (ModelState.IsValid)
             {
@@ -44,26 +43,25 @@ namespace BookingHotel.Controllers
                     string.IsNullOrEmpty(model.Name) ||
                     string.IsNullOrEmpty(model.PhoneNumber))
                 {
-                    ModelState.AddModelError("", "Vui lòng điền đầy đủ thông tin.");
+                    TempData["ErrorMessage"] = "Please complete all information.";
                     return View(model);
                 }
                 var existingUsername = _context.Accounts.FirstOrDefault(a => a.username == model.Username);
                 if (existingUsername != null)
                 {
-                    ModelState.AddModelError("", "Tên người dùng đã được sử dụng.");
+                    TempData["ErrorMessage"] = "Username already exists";
                     return View(model);
                 }
-
                 var existingPhoneNumber = _context.Accounts.FirstOrDefault(a => a.phoneNumber == model.PhoneNumber);
                 if (existingPhoneNumber != null)
                 {
-                    ModelState.AddModelError("", "Số điện thoại đã được sử dụng.");
+                    TempData["ErrorMessage"] = "The phone number is already in use.";
                     return View(model);
                 }
 
                 if (model.Password != model.ConfirmPassword)
                 {
-                    ModelState.AddModelError("", "Mật khẩu không khớp.");
+                    TempData["ErrorMessage"] = "Password and ConfirmPassword incorrect.";
                     return View(model);
                 }
 
@@ -95,34 +93,36 @@ namespace BookingHotel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(AccountViewModels model)
         {
-            if (ModelState.IsValid)
-            {
+
                 var account = _context.Accounts.FirstOrDefault(a => a.username == model.Username && a.password == model.Password);
                 if (account != null)
                 {
                     var role = account.role;
                     List<Claim> claims = new List<Claim>()
                     {
-                        new Claim (ClaimTypes.NameIdentifier,model.Username),
+                        //new Claim (ClaimTypes.NameIdentifier,model.Username),
                         new Claim(ClaimTypes.Name, model.Username),
-                        new Claim(ClaimTypes.Role, role.ToString()),
+                        new Claim(ClaimTypes.Role, role),
                     };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    AuthenticationProperties properties = new AuthenticationProperties()
-                    {
-                        AllowRefresh = true,
-                        IsPersistent = true
-                    };
+                   
 
-                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new  ClaimsPrincipal(identity), properties);
+                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new  ClaimsPrincipal(identity));
 
                     return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Username or password is incorrect";
+                }
+               
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Please complete all information.";
             }
-                //ViewData["ValidationMessage"] = "Không tìm thấy người dùng";
-                ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
-            }
+            
             return View(model);
         }
 
@@ -150,7 +150,7 @@ namespace BookingHotel.Controllers
             .Include(r => r.RoomType)
             .OrderByDescending(r => r.dateCheckIn)
             .ToList();
-            var model = new UserProfileViewModel
+            var model = new AccountViewModels
             {
                 Username = username,
                 Name = account.name,

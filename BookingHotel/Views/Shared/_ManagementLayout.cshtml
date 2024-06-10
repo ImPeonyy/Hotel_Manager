@@ -39,7 +39,7 @@
 
 
 <style>
-    .content {
+/*    .content {
         padding-left: 0px !important;
     }
     .container{
@@ -79,7 +79,42 @@
     }
     .container1{
             margin-top: 20px !important;
-    }
+    }*/
+        .container1 {
+            height: 100vh;
+        }
+
+        .sidebar {
+            height: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .sidebar ul {
+                padding-left: 0;
+            }
+
+            .sidebar .list-group-item {
+                border: none;
+                padding: 15px;
+                font-size: 16px;
+            }
+
+                .sidebar .list-group-item a {
+                    text-decoration: none;
+                    color: #000;
+                    display: block;
+                    transition: all 0.3s ease;
+                }
+
+                    .sidebar .list-group-item a:hover {
+                        background-color: #007bff;
+                        color: #fff;
+                        padding-left: 20px;
+                    }
+
+        .main-content {
+            padding: 20px;
+        }
 </style>
 
 <!--Nabar-->
@@ -137,44 +172,23 @@
        
     </div>
 
-    <div class="container1 col-md-12" style="display: flex">
-        <div class="sidebar col-md-2" style="width : 20%">
-            <ul class="side-bar-ul">
-                <li><a>Quản lý người dùng</a></li>
-                <li><a asp-area="" asp-controller="Rooms" asp-action="Index">Quản Phòng</a></li>
-                <li><a>Quản lý loại phòng</a></li>
-                <li><a>Quản lý dịch vụ</a></li>
-                <li><a asp-area="" asp-controller="Request" asp-action="Index">Quản lý yêu cầu</a></li>
-                <li><a>ABC</a></li>
-                <li><a>ABC</a></li>
-            </ul>
-        </div>
-        
-        <div class="content col-md-10">
-            
-                @RenderBody() 
-                @*<form action="#" class="bg-white p-5 contact-form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Subject">
-                    </div>
-                    <div class="form-group">
-                        <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
-                    </div>
-                </form>*@
-
-            
-        </div>
+    <div class="container1 d-flex">
+    <div class="sidebar col-md-2 p-3 bg-light">
+        <ul class="list-group">
+            <li class="list-group-item"><a href="#">Quản lý người dùng</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="Rooms" asp-action="Index">Quản Phòng</a></li>
+            <li class="list-group-item"><a href="#">Quản lý loại phòng</a></li>
+            <li class="list-group-item"><a href="#">Quản lý dịch vụ</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="Request" asp-action="Index">Quản lý yêu cầu</a></li>
+            <li class="list-group-item"><a href="#">ABC</a></li>
+            <li class="list-group-item"><a href="#">ABC</a></li>
+        </ul>
     </div>
-
+    <!-- Nội dung chính -->
+    <div class="main-content col-md-10">
+        @RenderBody()
+    </div>
+</div>
     <script src="~/TemplateUser/js/jquery.min.js"></script>
     <script src="~/TemplateUser/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="~/TemplateUser/~/TemplateUser/js/popper.min.js"></script>

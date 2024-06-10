@@ -27,19 +27,6 @@ namespace BookingHotel.Controllers
             _context = context;
         }
         [HttpGet]
-        //public IActionResult Index()
-        //{
-        //    var roomTypes = _context.RoomTypes.ToList();
-        //    if (roomTypes.Any()) // Kiểm tra xem roomTypes có giá trị không
-        //    {
-        //        var roomTypeList = new SelectList(roomTypes, "roomTypeID", "roomTypeName");
-        //        ViewBag.RoomTypes = roomTypeList;
-        //    }
-
-
-        //    return View();
-
-        //}
 
         public IActionResult Index()
         {
@@ -56,8 +43,6 @@ namespace BookingHotel.Controllers
 
             return View();
         }
-
-
         [HttpPost]
         public IActionResult Booking(Request model)
         {
@@ -66,6 +51,11 @@ namespace BookingHotel.Controllers
                 var username = HttpContext.User.Identity.Name;
                 if (username != null)
                 {
+                    if (model.dateCheckIn > model.dateCheckOut || model.dateCheckIn < DateTime.Now)
+                    {
+                        TempData["ErrorMesssage"] = "Please select a valid date";
+                        return RedirectToAction("Index", "Home");
+                    }
                     var user = _context.Accounts.FirstOrDefault(u => u.username == username);
                     var roomType = _context.RoomTypes.FirstOrDefault(rt => rt.roomTypeID == model.roomTypeID);
 
@@ -89,25 +79,28 @@ namespace BookingHotel.Controllers
 
                         _context.SaveChanges();
 
-                        TempData["Message"] = "Booking successful. Please keep an eye on your phone, staff will contact you as soon as possible.";
+                        TempData["SuccessMessage"] = "Booking successful. Please keep an eye on your phone, staff will contact you as soon as possible.";
                     }
                     else
                     {
-                        TempData["Message"] = "No rooms available for the selected type.";
+                        TempData["ErrorMesssage"] = "No rooms available for the selected type.";
                     }
-
+                    
                     return RedirectToAction("Index", "Home");
+                    
                 }
                 else
                 {
                     // Xử lý khi không thể lấy được accountID
                     return RedirectToAction("Login", "Account");
+                    
                 }
             }
             else
             {
                 // Xử lý khi người dùng chưa đăng nhập
                 return RedirectToAction("Login", "Account");
+                
             }
         }
 

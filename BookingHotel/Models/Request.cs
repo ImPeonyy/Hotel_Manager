@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingHotel.Models
 {
@@ -6,13 +7,18 @@ namespace BookingHotel.Models
     {
         public int requestID { get; set; }
         public int accountID { get; set; }
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name ="Check-In Date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode = true)]
         public DateTime dateCheckIn { get; set; }
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Check-Out Date")]
         public DateTime dateCheckOut { get; set; }
+        [Display(Name = "Guest")]
         public int guestCount { get; set; }
         public int roomTypeID { get; set; }
+        [Display(Name = "Message")]
         public string message { get; set; }
+        [Display(Name = "Status")]
         public string status { get; set; }
 
         public Account Account { get; set; }

@@ -1,4 +1,4 @@
-﻿@model AccountViewModels.UserProfileViewModel
+﻿@model BookingHotel.Models.AccountViewModels
 <div class="hero-wrap" style="background-image: url('@Url.Content("~/templateuser/images/bg_3_coppy.jpg")'); height:100px">
 </div>
 
@@ -112,25 +112,34 @@
                 <table class="table">
                 <thead>
                     <tr>
+                    <th>Code</th>
                     <th>Check-In Date</th>
                     <th>Check-Out Date</th>
                     <th>Guest Count</th>
                     <th>Room Type</th>
                     <th>Status</th>
-                    <th>Message</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach (var request in Model.Requests)          {
-                    <tr>
-                        <td>@request.dateCheckIn.ToString("dd/MM/yyyy")</td>
-                        <td>@request.dateCheckOut.ToString("dd/MM/yyyy")</td>
-                        <td>@request.guestCount</td>
-                        <td>@request.RoomType.roomTypeName</td>
-                        <td>@request.status</td>
-                        <td>@request.message</td>
-                    </tr>
-                            }
+                    @if (Model.Requests.Count > 0)
+                      {
+                         @foreach (var request in Model.Requests){
+                             <tr>
+                                <td>@request.requestID</td>
+                                <td>@request.dateCheckIn.ToString("dd/MM/yyyy")</td>
+                                <td>@request.dateCheckOut.ToString("dd/MM/yyyy")</td>
+                                <td>@request.guestCount</td>
+                                <td>@request.RoomType.roomTypeName</td>
+                                <td>@request.status</td>
+                             </tr>
+                                }
+                       }else
+                          {
+                             <tr>
+                                  <td colspan="6" style="text-align:center;">No bookings available</td>
+                            </tr>
+                          }
+
                 </tbody>
             </table>
                

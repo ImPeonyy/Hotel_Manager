@@ -6,13 +6,13 @@
     .form-control,
     .select-wrap select,
     textarea {
-        border: 1px solid #000 !important; /* Thay đổi màu và độ dày của viền theo ý muốn */
-        border-radius: 5px; /* Điều chỉnh độ cong của viền */
+        border: 1px solid #000 !important; 
+        border-radius: 5px; 
     }
 
     .wrap {
-        padding: 15px; /* Điều chỉnh khoảng cách bên trong phần tử */
-        margin-bottom: 15px; /* Điều chỉnh khoảng cách giữa các phần tử */
+        padding: 15px; 
+        margin-bottom: 15px;
     }
     #btn{
         
@@ -29,14 +29,6 @@
         padding-left :10px;
     }
 
-    /*.select-wrap select.form-control {
-        border: 1px solid #C0C0C0 !important;
-        width : 320px;
-        border-radius: 4px !important;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    */
     .wrap textarea.form-control {
         border: 1px solid #c0c0c0 !important;
        
@@ -44,6 +36,20 @@
         box-shadow: none !important;
         padding-left: 10px;
     }
+
+    .form-logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .form-logo h1 {
+            margin: 0;
+    font-size: 36px;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+        }
 
 
 </style>
@@ -85,11 +91,14 @@
         <div class="row no-gutters justify-content-center">
             <div class="col-lg-8">
                 <form asp-action="Booking" method="post" class="booking-form aside-stretch">
+                    <div class="form-logo">
+                        <h1>Book</h1>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="checkin_date">Check-in Date</label>
+                                    <label asp-for="dateCheckIn"></label>
                                     <input asp-for="dateCheckIn" id="checkin_date" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
                                 </div>
                             </div>
@@ -97,7 +106,7 @@
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="checkout_date">Check-out Date</label>
+                                    <label asp-for="dateCheckOut"></label>
                                     <input asp-for="dateCheckOut" id="checkout_date" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut" required>
                                 </div>
                             </div>
@@ -131,7 +140,7 @@
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="guest_count">Guests</label>
+                                    <label asp-for="guestCount"></label>
                                     <input asp-for="guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" readonly required>
                                 </div>
                             </div>
@@ -140,17 +149,11 @@
                         <div class="col-md-12 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="message">Message</label>
+                                    <label asp-for="message">Message</label>
                                     <textarea asp-for="message" id="message" name="message" class="form-control form-control-lg" rows="3" placeholder="Write your message here..."></textarea>
                                 </div>
                             </div>
-                        </div>
-                        @if (TempData["Message"] != null)
-                        {
-                            <div class="alert alert-info">
-                                @TempData["Message"]
-                            </div>
-                        }
+                        </div>                       
                         <div class="col-md-8">
                             <div class="form-group d-flex align-self-stretch">
                                 <button type="submit" id="btn" class="btn btn-primary py-5 py-md-3 px-5 align-self-stretch d-block">
@@ -159,15 +162,30 @@
                             </div>
                         </div>
                     </div>
-                    
                 </form>
+
             </div>
         </div>
     </div>
 
 </section>
-                        
+                    @section Scripts {
                         <script>
+                            $(document).ready(function () {
+                            @if (TempData["ErrorMesssage"] != null)
+                            {
+                                <text>
+                                        toastr.error('@TempData["ErrorMesssage"]');
+                                </text>
+                            }
+
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <text>
+                                        toastr.success('@TempData["SuccessMessage"]');
+                                </text>
+                            }
+                                    });
                             function updateGuestCount() {
                                 var roomTypeSelect = document.getElementById("room_type");
                                 var selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
@@ -175,20 +193,10 @@
 
                                 var guestCountInput = document.getElementById("guest_count");
                                 guestCountInput.value = maxPeople;
-                                //guestCountInput.disabled = true;
-                            }
-                            //function success(){
-                            //    var checkinDate = document.getElementById("checkin_date").value;
-                            //    var checkoutDate = document.getElementById("checkout_date").value;
-                            //    var roomType = document.getElementById("room_type").value;
-                            //    var guestCount = document.getElementById("guest_count").value;
-                            //    if (checkinDate && checkoutDate && roomType && guestCount ){
-                            //          alert("Booking successful. Please keep an eye on your phone, staff will contact you as soon as possible");
-                            //    }
-                                
-                            //}
-                        </script>
 
+                            }
+                        </script>
+                    }
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">

@@ -1,4 +1,6 @@
-﻿namespace BookingHotel.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookingHotel.Models
 {
     public class Account
     {

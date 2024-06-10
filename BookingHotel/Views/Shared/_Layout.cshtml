@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="~/TemplateUser/css/icomoon.css">
     <link rel="stylesheet" href="~/TemplateUser/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -54,11 +56,11 @@
                                 Xin chào, @User.Identity.Name
                             </a>
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                @if (User.IsInRole("1"))  // Kiểm tra nếu người dùng có role là 1
+                                @if (User.IsInRole("1")) // Kiểm tra admin
                                 {
                                     <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Index">Admin</a>
                                 }else{
-                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="UserProfile">Information</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="UserProfile">Booking history</a>
                                 }
                                 <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                             </div>
@@ -171,6 +173,9 @@
     <script src="~/TemplateUser/js/google-map.js"></script>
     <script src="~/TemplateUser/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
