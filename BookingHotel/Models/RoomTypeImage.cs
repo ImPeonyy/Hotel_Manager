@@ -1,8 +1,8 @@
 ﻿namespace BookingHotel.Models
 {
-    public class RoomTypeDetailImage
+    public class RoomTypeImage
     {
-        public int roomTypeDetailImageID { get; set; }
+        public int roomTypeImageID { get; set; }
         public int roomTypeDetailID { get; set; }
         public string imagePath { get; set; }
 

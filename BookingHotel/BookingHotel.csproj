@@ -18,7 +18,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Surf Club Room\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Bay-View Room\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Ocean Bungalow\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Ocean-View Corner Studio\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Bay-View Corner Studio\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\OceanFront Four Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Marybelle Penthouse Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Bay-View One Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\OceanFront One Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\OceanFront Two Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Bay-View Two Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\Surf Club One Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\City-View Two Bedroom Suite\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\OceanFront Accessible Room\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\City View Room\" />
+    <Folder Include="wwwroot\img\RoomTypeImages\OceanFront Room\" />
   </ItemGroup>
 
 </Project>

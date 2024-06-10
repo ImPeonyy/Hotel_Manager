@@ -33,7 +33,8 @@
                     </div>
                     <div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
                         <h2 class="mb-4">@Html.DisplayFor(model => model.roomTypeName) <span>- (@Html.DisplayFor(model => model.roomLeft) Available rooms)</span></h2>
-                        <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
+                        @* <p>@Html.DisplayFor(model => model.RoomTypeDetail.description)</p> *@
+                        <p>@Html.DisplayFor(model => model.RoomTypeDetail.Service.roomHighlights)</p>
                         <div class="d-md-flex mt-5 mb-5">
                             <ul class="list">
                                 <li><span>Max:</span> @Html.DisplayFor(model => model.RoomTypeDetail.maxPeople) Persons</li>

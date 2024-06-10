@@ -13,6 +13,6 @@
 
         public RoomType RoomType { get; set; }
         public Service Service { get; set; }
-        public ICollection<RoomTypeDetailImage> Images { get; set; }
+        public ICollection<RoomTypeImage> Images { get; set; }
     }
 }
