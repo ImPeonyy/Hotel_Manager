@@ -112,10 +112,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-statusFilter="@ViewData["StatusFilter"]">dateCheckIn</a></th>
+            <th><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-statusFilter="@ViewData["StatusFilter"]">DateCheckIn</a></th>
             <th>DateCheckOut</th>
             <th>GuestCount</th>
-            <th>RoomType</th>
+            <th><a asp-action="Index" asp-route-sortOrder="@ViewData["RoomTypeSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-statusFilter="@ViewData["StatusFilter"]">RoomType</a></th>
             <th>Status</th>
             <th>PhoneNumber</th>
             <th>Actions</th>

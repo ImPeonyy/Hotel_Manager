@@ -1,4 +1,4 @@
-﻿namespace BookingHotel.Models
+﻿namespace BookingHotel.ViewModels
 {
     public class RoomTypeViewModel
     {

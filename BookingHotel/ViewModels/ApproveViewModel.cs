@@ -1,4 +1,6 @@
-﻿namespace BookingHotel.Models
+﻿using BookingHotel.Models;
+
+namespace BookingHotel.ViewModels
 {
     public class ApproveViewModel
     {

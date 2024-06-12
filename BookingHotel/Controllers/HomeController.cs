@@ -31,16 +31,14 @@ namespace BookingHotel.Controllers
         public IActionResult Index()
         {
             var roomTypes = _context.RoomTypes.Include(rt => rt.RoomTypeDetail).ToList();
-            var roomTypeViewModels = roomTypes.Select(rt => new RoomTypeViewModel
+            var roomTypeViewModels = roomTypes.Select(rt => new ViewModels.RoomTypeViewModel
             {
                 Value = rt.roomTypeID,
                 Text = rt.roomTypeName,
                 RoomLeft = rt.roomLeft,
                 MaxPeople = rt.RoomTypeDetail?.maxPeople ?? 0 
             }).ToList();
-
             ViewBag.RoomTypeViewModels = roomTypeViewModels;
-
             return View();
         }
         [HttpPost]
@@ -49,8 +47,7 @@ namespace BookingHotel.Controllers
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 var username = HttpContext.User.Identity.Name;
-                if (username != null)
-                {
+
                     if (model.dateCheckIn > model.dateCheckOut || model.dateCheckIn < DateTime.Now)
                     {
                         TempData["ErrorMesssage"] = "Please select a valid date";
@@ -73,8 +70,6 @@ namespace BookingHotel.Controllers
                         };
 
                         _context.Requests.Add(request);
-
-                        // Update the roomLeft count
                         roomType.roomLeft -= 1;
 
                         _context.SaveChanges();
@@ -85,23 +80,13 @@ namespace BookingHotel.Controllers
                     {
                         TempData["ErrorMesssage"] = "No rooms available for the selected type.";
                     }
-                    
-                    return RedirectToAction("Index", "Home");
-                    
-                }
-                else
-                {
-                    // Xử lý khi không thể lấy được accountID
-                    return RedirectToAction("Login", "Account");
-                    
-                }
+                    return RedirectToAction("Index", "Home");    
             }
             else
             {
-                // Xử lý khi người dùng chưa đăng nhập
-                return RedirectToAction("Login", "Account");
-                
+                return RedirectToAction("Login", "Account");    
             }
+            
         }
 
 

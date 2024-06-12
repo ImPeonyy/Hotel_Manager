@@ -19,7 +19,7 @@ namespace BookingHotel.Controllers
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["DateSort"] = String.IsNullOrEmpty(sortOrder) ? "dateCheckIn_desc" : "";
-
+            ViewData["RoomTypeSort"] = sortOrder == "RoomType" ? "RoomType_desc" : "RoomType";
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -47,6 +47,12 @@ namespace BookingHotel.Controllers
                 case "dateCheckIn_desc":
                     requests = requests.OrderByDescending(r => r.dateCheckIn);
                     break;
+                case "RoomType":
+                    requests = requests.OrderBy(r => r.RoomType.roomTypeName);
+                    break;
+                case "RoomType_desc":
+                    requests = requests.OrderByDescending(r => r.RoomType.roomTypeName);
+                    break;
                 default:
                     requests = requests.OrderBy(r => r.dateCheckIn);
                     break;
@@ -72,20 +78,19 @@ namespace BookingHotel.Controllers
                 return NotFound();
             }
 
-            string approvedRoomName = null;
+            string RoomName = null;
             if (request.status == "Apply" && request.Account.Enrollment != null)
             {
-                // Tìm Enrollment có RequestId khớp với request hiện tại
                 var approvedEnrollment = request.Account.Enrollment
                                                .FirstOrDefault(e => e.RequestID == id);
 
                 if (approvedEnrollment != null)
                 {
-                    approvedRoomName = approvedEnrollment.Room?.roomName;
+                    RoomName = approvedEnrollment.Room?.roomName;
                 }
             }
 
-            ViewBag.ApprovedRoomName = approvedRoomName;
+            ViewBag.ApprovedRoomName = RoomName;
             return View(request);
         }
 
@@ -103,7 +108,7 @@ namespace BookingHotel.Controllers
                 .ToList();
 
             // Tạo View Model để truyền dữ liệu ra View
-            var viewModel = new ApproveViewModel
+            var viewModel = new ViewModels.ApproveViewModel
             {
                 Request = request,
                 AvailableRooms = availableRooms

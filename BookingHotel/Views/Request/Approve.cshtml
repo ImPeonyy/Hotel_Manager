@@ -1,4 +1,4 @@
-﻿@model ApproveViewModel
+﻿@model BookingHotel.ViewModels.ApproveViewModel
 @{
     Layout = "_ManagementLayout";
 }
@@ -10,14 +10,14 @@
         <h4>Requested information</h4>
         <hr />
         <dl class="row">
-            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Request.RoomType.roomTypeName)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Request.RoomType.roomTypeName)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Request.RoomType.roomTypeName)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Request.RoomType.roomTypeName)</dd>
 
-            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Request.dateCheckIn)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Request.dateCheckIn)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Request.dateCheckIn)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Request.dateCheckIn)</dd>
 
-            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Request.dateCheckOut)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Request.dateCheckOut)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Request.dateCheckOut)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Request.dateCheckOut)</dd>
         </dl>
     </div>
 

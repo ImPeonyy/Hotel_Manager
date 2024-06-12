@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using static BookingHotel.Models.AccountViewModels;
+using static BookingHotel.ViewModels.AccountViewModels;
 using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
+using BookingHotel.ViewModels;
 
 namespace BookingHotel.Controllers
 {
@@ -25,7 +26,7 @@ namespace BookingHotel.Controllers
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
-
+        /* =============ĐĂNG KÍ============= */
         [HttpGet]
         public IActionResult Register()
         {
@@ -35,114 +36,115 @@ namespace BookingHotel.Controllers
         [HttpPost]
         public IActionResult Register([Bind("Username,Password,ConfirmPassword,Name,PhoneNumber")] AccountViewModels model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(model.Username) ||
-                    string.IsNullOrEmpty(model.Password) ||
-                    string.IsNullOrEmpty(model.ConfirmPassword) ||
-                    string.IsNullOrEmpty(model.Name) ||
-                    string.IsNullOrEmpty(model.PhoneNumber))
+                return View(model);
+            }
+
+            var existingAccount = _context.Accounts.FirstOrDefault(a => a.username == model.Username || a.phoneNumber == model.PhoneNumber);
+
+            if (existingAccount != null)
+            {
+                if (existingAccount.username == model.Username)
                 {
-                    TempData["ErrorMessage"] = "Please complete all information.";
-                    return View(model);
+                    TempData["ErrorMessage"]= "Username already exists.";
                 }
-                var existingUsername = _context.Accounts.FirstOrDefault(a => a.username == model.Username);
-                if (existingUsername != null)
-                {
-                    TempData["ErrorMessage"] = "Username already exists";
-                    return View(model);
-                }
-                var existingPhoneNumber = _context.Accounts.FirstOrDefault(a => a.phoneNumber == model.PhoneNumber);
-                if (existingPhoneNumber != null)
+                if (existingAccount.phoneNumber == model.PhoneNumber)
                 {
                     TempData["ErrorMessage"] = "The phone number is already in use.";
-                    return View(model);
                 }
 
-                if (model.Password != model.ConfirmPassword)
-                {
-                    TempData["ErrorMessage"] = "Password and ConfirmPassword incorrect.";
-                    return View(model);
-                }
-
-                var account = new Account
-                {
-                    username = model.Username,
-                    password = model.Password,
-                    name = model.Name,
-                    phoneNumber = model.PhoneNumber,
-                    role = "0"
-                };
-                
-                _context.Accounts.Add(account);
-                _context.SaveChanges();
-
-                return RedirectToAction("Login");
+                return View(model);
             }
-            return View(model);
-        }
 
-        [HttpGet]
+            if (model.Password != model.ConfirmPassword)
+            {
+                TempData["ErrorMessage"] = "Password and Confirm Password do not match.";
+                return View(model);
+            }
+
+            var account = new Account
+            {
+                username = model.Username,
+                password = model.Password, 
+                name = model.Name,
+                phoneNumber = model.PhoneNumber,
+                role = "0"
+            };
+
+            _context.Accounts.Add(account);
+            _context.SaveChanges();
+			TempData["SuccessMessage"] = "Register successfully, log in now";
+			return View(model);
+        }
+        /* End đăng kí */
+
+        /* =============ĐĂNG NHẬP============= */
         public IActionResult Login()
         {
             ClaimsPrincipal claimsPrincipal = HttpContext.User;
-            if (claimsPrincipal.Identity.IsAuthenticated) { 
-                return RedirectToAction("Index","Home");
+            if (claimsPrincipal.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Login(AccountViewModels model)
         {
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
 
                 var account = _context.Accounts.FirstOrDefault(a => a.username == model.Username && a.password == model.Password);
-                if (account != null)
-                {
-                    var role = account.role;
-                    List<Claim> claims = new List<Claim>()
+            if (account != null)
+            {
+                var role = account.role;
+                List<Claim> claims = new List<Claim>()
                     {
-                        //new Claim (ClaimTypes.NameIdentifier,model.Username),
                         new Claim(ClaimTypes.Name, model.Username),
                         new Claim(ClaimTypes.Role, role),
                     };
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                   
+                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new  ClaimsPrincipal(identity));
 
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Username or password is incorrect";
-                }
-               
-            if (!ModelState.IsValid)
-            {
-                TempData["ErrorMessage"] = "Please complete all information.";
+                await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+                return RedirectToAction("Index", "Home");
             }
-            
+            else
+            {
+                TempData["ErrorMessage"] = "Username or password is incorrect";
+            }
             return View(model);
         }
+        /* End đăng nhập*/
 
+        /* =============ĐĂNG XUẤT============= */
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
+
+        /* End đăng xuất */
+
+
+        /* =============Thông tin và lịch sử đặt phòng============= */
         [HttpGet]
         public IActionResult UserProfile()
         {
-            // Lấy tên người dùng từ Claims
+
             string username = HttpContext.User.Identity.Name;
 
-            // Tìm kiếm thông tin tài khoản trong cơ sở dữ liệu
             var account = _context.Accounts.FirstOrDefault(a => a.username == username);
 
             if (account == null)
-            { 
-                return RedirectToAction("Index", "Home"); 
+            {
+                return RedirectToAction("Index", "Home");
             }
 
             var requests = _context.Requests
@@ -156,11 +158,67 @@ namespace BookingHotel.Controllers
                 Name = account.name,
                 PhoneNumber = account.phoneNumber,
                 Requests = requests
-            };   
+            };
             return View(model);
         }
+        /* End thông tin và lịch sử mua hàng */
 
-       
+
+        /* =============ĐỔI MẬT KHẨU============= */
+        public async Task<IActionResult> ChangePassword(string username)
+        {
+            username = HttpContext.User.Identity.Name;
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.username == username);
+
+            if (account == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new ChangePasswordViewModel
+            {
+                Username = account.username,
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([Bind("Username,PasswordCurrent,Password,ConfirmPassword")] ChangePasswordViewModel model)
+        {
+
+            string username = HttpContext.User.Identity.Name;
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.username == username);
+            if (account == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            if (model.PasswordCurrent != account.password)
+            {
+                TempData["ErrorMessage"] = "Incorrect current password.";
+                return View(model);
+            }
+
+
+            if (model.Password != model.ConfirmPassword)
+            {
+                TempData["ErrorMessage"] = "New password and confirmation do not match.";
+                return View(model);
+            }
+
+
+            account.password = model.Password;
+            TempData["SuccessMessage"] = "Update password successfully.";
+
+            _context.Update(account);
+            await _context.SaveChangesAsync();
+
+            return View(model);
+        }
+        /* End Đổi mật khẩu */
+
     }
 
 }

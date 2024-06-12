@@ -1,4 +1,4 @@
-﻿@model BookingHotel.Models.AccountViewModels
+﻿@model BookingHotel.ViewModels.AccountViewModels
 @{
     Layout = null;
 }
@@ -18,39 +18,6 @@
         width: 100%; 
     }
 </style>
-
-@*<div class="box">
-    <form asp-action="Register" method="post">
-        <h2>Đăng ký</h2>
-        <div class="mb-3">
-            <label class="form-label" asp-for="Username"></label>
-            <input class="form-control" asp-for="Username" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" asp-for="Password"></label>
-            <input class="form-control" asp-for="Password" type="password" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" asp-for="ConfirmPassword"></label>
-            <input class="form-control" asp-for="ConfirmPassword" type="password" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" asp-for="Name"></label>
-            <input class="form-control" asp-for="Name" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" asp-for="PhoneNumber"></label>
-            <input class="form-control" asp-for="PhoneNumber" />
-        </div>
-        <button type="submit" class="btn btn-primary">Đăng ký</button>
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger mt-3" role="alert">
-                <strong>Lỗi!</strong> @Html.ValidationSummary()
-            </div>
-        }
-    </form>
-</div>*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +52,7 @@
     .wrap-login100 {
     width: 80%; /* Chiều rộng của form */
     max-width: 500px; /* Độ rộng tối đa */
-    height:850px;
+    height:880px;
     }
 
     .register-link {
@@ -111,74 +78,77 @@
 </head>
 <body>
 
-<div class="limiter">
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('@Url.Content("~/templatelogin/images/bg_1.jpg")'); background-color: rgba(255, 255, 255, 0.4);">
+            <div class="wrap-login100">
+                <form class="login100-form validate-form" asp-action="Register" method="post">
+                    <span class="login100-form-logo">
+                        <i class="zmdi zmdi-landscape"></i>
+                    </span>
 
-    <div class="container-login100" style="background-image: url('@Url.Content("~/templatelogin/images/bg_1.jpg")'); background-color: rgba(255, 255, 255, 0.4);">
-
-        <div class="wrap-login100">
-
-            <form class="login100-form validate-form" asp-action="Register" method="post">
-                <span class="login100-form-logo">
-                    <i class="zmdi zmdi-landscape"></i>
-                </span>
-
-                <span class="login100-form-title p-b-34 p-t-27">
-                    Register
-                </span>
-
-                <div class="wrap-input100 validate-input" data-validate="Enter username">
-                    <input class="input100" asp-for="Username" placeholder="Username">
-                    <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-
-                <div class="wrap-input100 validate-input" data-validate="Enter password">
-                    <input class="input100" asp-for="Password" type="password" placeholder="Password">
-                    <span class="focus-input100" data-placeholder="&#xf191;"></span>
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-
-                <div class="wrap-input100 validate-input" data-validate="Enter ConfirmPassword">
-                    <input class="input100" asp-for="ConfirmPassword" type="password" placeholder="ConfirmPassword">
-                    <span class="focus-input100" data-placeholder="&#xf191;"></span>
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-
-                <div class="wrap-input100 validate-input" data-validate="Enter Name">
-                    <input class="input100" asp-for="Name" placeholder="Name">
-                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-
-                <div class="wrap-input100 validate-input" data-validate="Enter PhoneNumber">
-                    <input class="input100" asp-for="PhoneNumber" placeholder="PhoneNumber">
-                    <span class="focus-input100" data-placeholder="&#xf2be;"></span>
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>
-
-                <div class="register-link">
-                    <label>
-                            You have an account? <a asp-controller="Account" asp-action="Login" class="register-link-text">Login</a>
-                    </label>
-                </div>
-
-                <div class="container-login100-form-btn">
-                    <button class="login100-form-btn">
+                    <span class="login100-form-title p-b-34 p-t-27">
                         Register
-                    </button>
-                </div>
-                <div>
-                        @if (TempData["ErrorMessage"] != null)
-                        {
-                            <div class="alert alert-danger" style="margin-top:5px">
-                                @TempData["ErrorMessage"]
-                            </div>
-                        }
-                </div>
-            </form>
+                    </span>
+
+                    
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter username">
+                        <input class="input100" asp-for="Username" placeholder="Username">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100" asp-for="Password" type="password" placeholder="Password">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter ConfirmPassword">
+                        <input class="input100" asp-for="ConfirmPassword" type="password" placeholder="ConfirmPassword">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter Name">
+                        <input class="input100" asp-for="Name" placeholder="Name">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter PhoneNumber">
+                        <input class="input100" asp-for="PhoneNumber" placeholder="PhoneNumber">
+                        <span class="focus-input100" data-placeholder="&#xf2be;"></span>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="register-link">
+                        <label>
+                            You have an account? <a asp-controller="Account" asp-action="Login" class="register-link-text">Login</a>
+                        </label>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Register
+                        </button>
+                    </div>
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger" style="margin-top:10px">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+                    @if(TempData["SuccessMessage"]!= null)
+                    {
+                        <div class="alert alert-success" style="margin-top:10px">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+                </form>
+            </div>
         </div>
     </div>
+    </body>
 
-</div>
-
-</body>
+    }
