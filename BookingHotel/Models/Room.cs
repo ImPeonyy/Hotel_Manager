@@ -1,10 +1,17 @@
-﻿namespace BookingHotel.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookingHotel.Models
 {
     public class Room
     {
         public int roomID { get; set; }
+        [Display(Name = "Name")]
+        [Required]
+        [StringLength(5, MinimumLength = 3, ErrorMessage = "Invalid length")]
         public string roomName { get; set; }
+        [Display(Name = "Room Type")]
         public int roomTypeID { get; set; }
+        [Display(Name = "Status")]
         public string status { get; set; }
 
         public RoomType RoomType { get; set; }

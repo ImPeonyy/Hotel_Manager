@@ -1,30 +1,8 @@
-﻿@model BookingHotel.Models.Request
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    .form-control,
-    .select-wrap select,
-    textarea {
-        border: 1px solid #000 !important; /* Thay đổi màu và độ dày của viền theo ý muốn */
-        border-radius: 5px; /* Điều chỉnh độ cong của viền */
-    }
-
-    .wrap {
-        padding: 15px; /* Điều chỉnh khoảng cách bên trong phần tử */
-        margin-bottom: 15px; /* Điều chỉnh khoảng cách giữa các phần tử */
-    }
-    #btn{
-        
-        margin-left : 55%
-    }
-/*    #checkout_date,
-    #checkin_date,
-    #message{
-        border: 1px solid #000 !important;
-    }*/
-
-</style>
+@model BookingHotel.Models.Request
+<link href="~/css/home.css" rel="stylesheet" />
 
 <div class="hero">
     <section class="home-slider owl-carousel">
@@ -63,20 +41,23 @@
         <div class="row no-gutters justify-content-center">
             <div class="col-lg-8">
                 <form asp-action="Booking" method="post" class="booking-form aside-stretch">
+                    <div class="form-logo">
+                        <h1>Book</h1>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="checkin_date">Check-in Date</label>
-                                    <input asp-for="dateCheckIn" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
+                                    <label asp-for="dateCheckIn"></label>
+                                    <input asp-for="dateCheckIn" id="checkin_date" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="checkout_date">Check-out Date</label>
-                                    <input asp-for="dateCheckOut" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut"  required>
+                                    <label asp-for="dateCheckOut"></label>
+                                    <input asp-for="dateCheckOut" id="checkout_date" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut" required>
                                 </div>
                             </div>
                         </div>
@@ -87,17 +68,17 @@
                                     <div class="form-field">
                                         <div class="select-wrap">
                                             <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                            <select asp-for="RoomType" id="room_type" name="roomTypeID" class="form-control form-control-lg" required>
+                                            <select asp-for="RoomType" id="room_type" name="roomTypeID" class="form-control form-control-lg" required onchange="updateGuestCount()">
                                                 <option value="">Room Type</option>
                                                 @foreach (var item in ViewBag.RoomTypeViewModels)
                                                 {
                                                     if (item.RoomLeft > 0)
                                                     {
-                                                        <option value="@item.Value">@item.Text</option>
+                                                        <option value="@item.Value" data-max-people="@item.MaxPeople">@item.Text</option>
                                                     }
                                                     else
                                                     {
-                                                        <option value="@item.Value" disabled>@item.Text (No available rooms)</option>
+                                                        <option value="@item.Value" data-max-people="@item.MaxPeople" disabled>@item.Text (No available rooms)</option>
                                                     }
                                                 }
                                             </select>
@@ -109,30 +90,20 @@
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="guest_count">Guests</label>
-                                    <div class="form-field">
-                                        <div class="select-wrap">
-                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                            <select asp-for="guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" required>
-                                                @foreach (var item in ViewBag.RoomTypeDetails)
-                                                {
-                                                    int numberOfAdults = int.Parse(item.Text);
-                                                    <option value="@item.Value">@item.Text @(numberOfAdults > 1 ? "Adults" : "Adult")</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <label asp-for="guestCount"></label>
+                                    <input asp-for="guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" readonly required>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-12 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label for="message">Message</label>
+                                    <label asp-for="message">Message</label>
                                     <textarea asp-for="message" id="message" name="message" class="form-control form-control-lg" rows="3" placeholder="Write your message here..."></textarea>
                                 </div>
                             </div>
-                        </div>
+                        </div>                       
                         <div class="col-md-8">
                             <div class="form-group d-flex align-self-stretch">
                                 <button type="submit" id="btn" class="btn btn-primary py-5 py-md-3 px-5 align-self-stretch d-block">
@@ -142,14 +113,40 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
 
 </section>
+                    @section Scripts {
+                        <script>
+                            $(document).ready(function () {
+                            @if (TempData["ErrorMesssage"] != null)
+                            {
+                                <text>
+                                        toastr.error('@TempData["ErrorMesssage"]');
+                                </text>
+                            }
 
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <text>
+                                        toastr.success('@TempData["SuccessMessage"]');
+                                </text>
+                            }
+                                    });
+                            function updateGuestCount() {
+                                var roomTypeSelect = document.getElementById("room_type");
+                                var selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+                                var maxPeople = selectedOption.getAttribute("data-max-people");
 
+                                var guestCountInput = document.getElementById("guest_count");
+                                guestCountInput.value = maxPeople;
 
+                            }
+                        </script>
+                    }
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">

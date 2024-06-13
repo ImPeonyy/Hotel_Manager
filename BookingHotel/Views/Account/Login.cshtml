@@ -1,93 +1,38 @@
-﻿@{
+﻿﻿@{
     Layout = null;
 }
 
-@model BookingHotel.Models.AccountViewModels.LoginViewModel
-<style>
-    .box {
-        margin-bottom: 40px;
-        margin-top: 40px;
-        margin-left: 50px;
-        width: 50%; 
-        padding: 20px;
-        border: 1px solid #ccc; 
-        border-radius: 10px;
-    }
+@model BookingHotel.ViewModels.AccountViewModels
 
-   
-    .form-control {
-        width: 100%; 
-    }
-
-    .register-link {
-        text-align: right;
-        color : white;
-    }
-
-    .register-link-text {
-        color: #FFFF00; /* Màu xanh đậm */
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-     .register-link-text:hover {
-         color: #0056b3; /* Màu xanh khi hover */
-         text-decoration: underline;
-     }
-
-    .login100-form-btn{
-        margin-top:10px;
-    }
-</style>
-@*<div class="box">
- <h2 class="mt-5">Đăng nhập</h2>
-        <form asp-action="Login" method="post">
-            <div class="mb-3">
-                <label for="Username" class="form-label">Tên người dùng</label>
-                <input id="Username" class="form-control" asp-for="Username" />
-            </div>
-            <div class="mb-3">
-                <label for="Password" class="form-label">Mật khẩu</label>
-                <input id="Password" class="form-control" asp-for="Password" type="password" />
-            </div>
-            <button type="submit" class="btn btn-primary">Đăng nhập</button>
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger mt-3" role="alert">
-                    <strong>Lỗi!</strong> @Html.ValidationSummary()
-                </div>
-        }
-        </form>
-    </div>
-*@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V3</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="~/TemplateLogin/images/icons/favicon.ico" />
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/bootstrap/css/bootstrap.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/fonts/iconic/css/material-design-iconic-font.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/css-hamburgers/hamburgers.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/animsition/css/animsition.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/select2/select2.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/daterangepicker/daterangepicker.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/css/util.css">
-	<link rel="stylesheet" type="text/css" href="~/TemplateLogin/css/main.css">
-	<!--===============================================================================================-->
+    <title>Login V3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/TemplateLogin/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/TemplateLogin/css/main.css">
+    <!--===============================================================================================-->
+    <link href="~/css/login.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -106,28 +51,29 @@
                     <div class="wrap-input100 validate-input" data-validate="Enter username">
                         <input class="input100" asp-for="Username" type="text" name="username" placeholder="Username">
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                        <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
                         <input class="input100" asp-for="Password" type="password" name="password" placeholder="Password">
                         <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
-                       <div class="register-link">
-                    <label>
-                        Bạn chưa có tài khoản? <a asp-controller="Account" asp-action="Register" class="register-link-text">Đăng kí tài khoản</a>
-                    </label>
+                    <div class="register-link">
+                        <label>
+                            You haven't an account?<a asp-controller="Account" asp-action="Register" class="register-link-text"> Register</a>
+                        </label>
                     </div>
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
                             Login
                         </button>
                     </div>
-
-                    @if (!ViewData.ModelState.IsValid)
+                    @if (TempData["ErrorMessage"] != null)
                     {
-                        <div class="alert alert-danger mt-3" role="alert">
-                            <strong>Error!</strong> @Html.ValidationSummary()
+                        <div class="alert alert-danger" style="margin-top:10px">
+                            @TempData["ErrorMessage"]
                         </div>
                     }
                 </form>
@@ -135,24 +81,6 @@
         </div>
     </div>
 
-	<div id="dropDownSelect1"></div>
-
-@*	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/vendor/bootstrap/js/popper.js"></script>
-	<script src="~/TemplateLogin/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/vendor/select2/select2.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/vendor/daterangepicker/moment.min.js"></script>
-	<script src="~/TemplateLogin/vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/vendor/countdowntime/countdowntime.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/TemplateLogin/js/main.js"></script>
-*@
+    <div id="dropDownSelect1"></div>
 </body>
 </html>

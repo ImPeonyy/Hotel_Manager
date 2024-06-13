@@ -1,6 +1,6 @@
 ﻿using BookingHotel.Data;
 using BookingHotel.Models;
-
+using BookingHotel.Models.RoomViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -36,43 +36,41 @@ namespace BookingHotel.Controllers
         //        ViewBag.RoomTypes = roomTypeList;
         //    }
 
-           
+
         //    return View();
-           
+
         //}
 
         public IActionResult Index()
         {
-            var roomTypes = _context.RoomTypes.ToList();
-            var roomTypeViewModels = roomTypes.Select(rt => new RoomTypeViewModel
+            var roomTypes = _context.RoomTypes.Include(rt => rt.RoomTypeDetail).ToList();
+            var roomTypeViewModels = roomTypes.Select(rt => new ViewModels.RoomTypeViewModel
             {
                 Value = rt.roomTypeID,
                 Text = rt.roomTypeName,
-                RoomLeft = rt.roomLeft
+                RoomLeft = rt.roomLeft,
+                MaxPeople = rt.RoomTypeDetail?.maxPeople ?? 0
             }).ToList();
-
             ViewBag.RoomTypeViewModels = roomTypeViewModels;
-            var roomTypesDeital = _context.RoomTypeDetails.ToList();
-            if (roomTypesDeital.Any())
-            {
-                var guestCount = new SelectList(roomTypesDeital, "maxPeople", "maxPeople");
-                ViewBag.RoomTypeDetails = guestCount;
-            }
             return View();
         }
-
         [HttpPost]
         public IActionResult Booking(Request model)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 var username = HttpContext.User.Identity.Name;
-                if (username != null)
+
+                if (model.dateCheckIn > model.dateCheckOut || model.dateCheckIn < DateTime.Now)
                 {
-                    var user = _context.Accounts.FirstOrDefault(u => u.username == username);
-                    //var roomType = _context.RoomTypes.FirstOrDefault(r => r.roomTypeID == model.roomType)?.roomTypeName;
-                    // accountIdValue chứa giá trị accountID
-                    // Thêm logic để lưu yêu cầu vào cơ sở dữ liệu
+                    TempData["ErrorMesssage"] = "Please select a valid date";
+                    return RedirectToAction("Index", "Home");
+                }
+                var user = _context.Accounts.FirstOrDefault(u => u.username == username);
+                var roomType = _context.RoomTypes.FirstOrDefault(rt => rt.roomTypeID == model.roomTypeID);
+
+                if (roomType != null && roomType.roomLeft > 0)
+                {
                     var request = new Request
                     {
                         accountID = user.accountID,
@@ -85,20 +83,23 @@ namespace BookingHotel.Controllers
                     };
 
                     _context.Requests.Add(request);
+                    roomType.roomLeft -= 1;
+
                     _context.SaveChanges();
-                    return RedirectToAction("Index", "Home");
+
+                    TempData["SuccessMessage"] = "Booking successful. Please keep an eye on your phone, staff will contact you as soon as possible.";
                 }
                 else
                 {
-                    // Xử lý khi không thể lấy được accountID
-                    return RedirectToAction("Login", "Account");
+                    TempData["ErrorMesssage"] = "No rooms available for the selected type.";
                 }
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                // Xử lý khi người dùng chưa đăng nhập
                 return RedirectToAction("Login", "Account");
             }
+
         }
 
 
@@ -113,11 +114,25 @@ namespace BookingHotel.Controllers
         {
             var roomTypes = _context.RoomTypes
             .Include(r => r.RoomTypeDetail)
+                .ThenInclude(r => r.Images)
             .AsNoTracking();
             return View(await roomTypes.ToListAsync());
         }
         public async Task<IActionResult> RoomDetail(int? id)
         {
+            //if (id == null || _context.Rooms == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var viewModel = new RoomTypeData();
+            //var roomTypeDetails = await _context.RoomTypeDetails
+            //    .Include(r => r.Service)
+            //    .Include(r => r.Images)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+
+            //return View(roomTypeDetails);
 
             if (id == null || _context.RoomTypes == null)
             {
@@ -131,13 +146,6 @@ namespace BookingHotel.Controllers
                 .ThenInclude(r => r.Images)
             .AsNoTracking()
             .FirstOrDefaultAsync(rt => rt.roomTypeID == id);
-            return View(roomTypes);
-
-            if (roomTypes == null)
-            {
-                return NotFound();
-            }
-
             return View(roomTypes);
         }
         public IActionResult Contact()

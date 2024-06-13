@@ -1,11 +1,18 @@
-﻿﻿
+﻿﻿@{
+    Layout = null;
+}
+@if (!User.IsInRole("1"))
+{
+    <script>
+        window.location.href = '@Url.Action("Index", "Home")';
+    </script>
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Harborlights - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="~/TemplateUser/css/open-iconic-bootstrap.min.css">
@@ -27,10 +34,90 @@
     <link rel="stylesheet" href="~/TemplateUser/css/icomoon.css">
     <link rel="stylesheet" href="~/TemplateUser/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 <body>
+
+
+    <style>
+        /*    .content {
+                padding-left: 0px !important;
+            }
+            .container{
+                margin-top: 20px !important;
+            }
+
+            .content-body {
+                padding-left: 0px !important;
+            }
+
+            .sidebar {
+                padding-right: 0px !important;
+
+            }
+
+            .side-bar-ul {
+                width: 100%;
+                padding-left: 0px !important;
+            }
+            .side-bar-ul li {
+
+                margin-bottom: 5px;
+                padding: 5px;
+                list-style-type: none;
+                height: 80%;
+                cursor: pointer;
+                gap: 5px;
+                margin-right:20px !important;
+            }
+
+            .side-bar-ul a{
+                color: #000;
+            }
+
+           .side-bar-ul :hover{
+                background-color: gray;
+            }
+            .container1{
+                    margin-top: 20px !important;
+            }*/
+        .container1 {
+            height: 100vh;
+        }
+
+        .sidebar {
+            height: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .sidebar ul {
+                padding-left: 0;
+            }
+
+            .sidebar .list-group-item {
+                border: none;
+                padding: 15px;
+                font-size: 16px;
+            }
+
+                .sidebar .list-group-item a {
+                    text-decoration: none;
+                    color: #000;
+                    display: block;
+                    transition: all 0.3s ease;
+                }
+
+                    .sidebar .list-group-item a:hover {
+                        background-color: #007bff;
+                        color: #fff;
+                        padding-left: 20px;
+                    }
+
+        .main-content {
+            padding: 20px;
+        }
+    </style>
+
+    <!--Nabar-->
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">Im<span></span></a>
@@ -46,9 +133,11 @@
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="OurRooms" class="nav-link">Our Rooms</a>
                     </li>
+
                     <li class="nav-item"><a href="restaurant.html" class="nav-link">Restaurant</a></li>
                     <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                     <li class="nav-item"><a asp-controller="Home" asp-action="Blog" class="nav-link">Blog</a></li>
+                    @*<li class="nav-item"><a asp-controller="Home" asp-action="LogOut" class="nav-link">LogOut</a></li>*@
 
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -57,16 +146,6 @@
                                 Xin chào, @User.Identity.Name
                             </a>
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                @if (User.IsInRole("1"))
-                                {
-                                    <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Index">Admin</a>
-                                }
-                                else
-                                {
-                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="UserProfile">Booking history</a>
-
-                                }
-                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                             </div>
                         </li>
@@ -85,81 +164,30 @@
                     }
                 </ul>
             </div>
+
         </div>
     </nav>
     <!-- END nav -->
-    @RenderBody()
+    <div class="hero-wrap" style="background-image: url('@Url.Content("~/templateuser/images/bg_3_coppy.jpg")'); height:100px">
+    </div>
 
-    <footer class="ftco-footer ftco-section img" style="background-image: url('@Url.Content("~/templateuser/images/bg_4.jpg")');">
-        @* </a>*@
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-md">
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Harbor Lights</h2>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                        <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-                            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="ftco-footer-widget mb-4 ml-md-5">
-                        <h2 class="ftco-heading-2">Useful Links</h2>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block">Blog</a></li>
-                            <li><a href="#" class="py-2 d-block">Rooms</a></li>
-                            <li><a href="#" class="py-2 d-block">Amenities</a></li>
-                            <li><a href="#" class="py-2 d-block">Gift Card</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Privacy</h2>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block">Career</a></li>
-                            <li><a href="#" class="py-2 d-block">About Us</a></li>
-                            <li><a href="#" class="py-2 d-block">Contact Us</a></li>
-                            <li><a href="#" class="py-2 d-block">Services</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Have a Questions?</h2>
-                        <div class="block-23 mb-3">
-                            <ul>
-                                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-                                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-                                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 text-center">
-
-                    <p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
-                </div>
-            </div>
+    <div class="container1 d-flex">
+        <div class="sidebar col-md-2 p-3 bg-light">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#">Quản lý người dùng</a></li>
+                <li class="list-group-item"><a asp-area="" asp-controller="Rooms" asp-action="Index">Quản Phòng</a></li>
+                <li class="list-group-item"><a href="#">Quản lý loại phòng</a></li>
+                <li class="list-group-item"><a href="#">Quản lý dịch vụ</a></li>
+                <li class="list-group-item"><a asp-area="" asp-controller="Request" asp-action="Index">Quản lý yêu cầu</a></li>
+                <li class="list-group-item"><a href="#">ABC</a></li>
+                <li class="list-group-item"><a href="#">ABC</a></li>
+            </ul>
         </div>
-    </footer>
-
-
-
-    <!-- loader -->
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
-
-
+        <!-- Nội dung chính -->
+        <div class="main-content col-md-10">
+            @RenderBody()
+        </div>
+    </div>
     <script src="~/TemplateUser/js/jquery.min.js"></script>
     <script src="~/TemplateUser/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="~/TemplateUser/~/TemplateUser/js/popper.min.js"></script>
@@ -177,9 +205,6 @@
     <script src="~/TemplateUser/js/google-map.js"></script>
     <script src="~/TemplateUser/js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
