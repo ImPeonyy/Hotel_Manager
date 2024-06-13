@@ -148,11 +148,24 @@ namespace BookingHotel.Data
 
             var roomTypeImages = new RoomTypeImage[]
             {
-                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 1).roomTypeDetailID, imagePath="path 1"},
-                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 2).roomTypeDetailID, imagePath="path 2"},
-                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 3).roomTypeDetailID, imagePath="path 3"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 1).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 2).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 3).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 4).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 5).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 6).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 7).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 8).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 9).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 10).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 11).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 12).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 13).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 14).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 15).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
+                new RoomTypeImage{roomTypeDetailID= roomTypeDetails.Single(s => s.roomTypeDetailID == 16).roomTypeDetailID, imagePath="~\\img\\RoomTypeImages\\OceanFront Room\\1.jpg"},
             };
-            hotelContext.roomTypeDetailImages.AddRange(roomTypeImages);
+            hotelContext.roomTypeImages.AddRange(roomTypeImages);
             hotelContext.SaveChanges();
 
             // Booking Context

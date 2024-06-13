@@ -13,7 +13,7 @@ namespace BookingHotel.Data
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<RoomTypeDetail> RoomTypeDetails { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<RoomTypeImage> roomTypeDetailImages { get; set; }
+        public DbSet<RoomTypeImage> roomTypeImages { get; set; }
         public DbSet<ComboSale> ComboSales { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Request> Requests { get; set; }
@@ -25,7 +25,7 @@ namespace BookingHotel.Data
             modelBuilder.Entity<RoomType>().ToTable("RoomType");
             modelBuilder.Entity<RoomTypeDetail>().ToTable("RoomTypeDetail");
             modelBuilder.Entity<Service>().ToTable("Service");
-            modelBuilder.Entity<RoomTypeImage>().ToTable("RoomTypeDetailImage");
+            modelBuilder.Entity<RoomTypeImage>().ToTable("RoomTypeImage");
             modelBuilder.Entity<ComboSale>().ToTable("ComboSale");
             modelBuilder.Entity<Account>().ToTable("Account");
             modelBuilder.Entity<Request>().ToTable("Request");

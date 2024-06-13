@@ -38,8 +38,6 @@ namespace BookingHotel.Controllers
             {
                 return NotFound();
             }
-            var code = _context.Rooms.Where(r => r.roomID == id)
-                        .Select(r => r.roomTypeID).ToList();
 
             var room = await _context.Rooms
                 .Include(r => r.RoomType)

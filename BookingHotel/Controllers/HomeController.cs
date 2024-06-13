@@ -127,6 +127,8 @@ namespace BookingHotel.Controllers
             var roomTypes = await _context.RoomTypes
             .Include(r => r.RoomTypeDetail)
                 .ThenInclude(r => r.Service)
+            .Include(r => r.RoomTypeDetail)
+                .ThenInclude(r => r.Images)
             .AsNoTracking()
             .FirstOrDefaultAsync(rt => rt.roomTypeID == id);
             return View(roomTypes);

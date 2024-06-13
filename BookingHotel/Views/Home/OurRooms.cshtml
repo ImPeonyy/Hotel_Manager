@@ -3,7 +3,7 @@
 }
 @model IEnumerable<BookingHotel.Models.RoomType>
 
-<div class="hero-wrap" style="background-image: url('@Url.Content("~/templateuser/images/bg_3.jpg")');">
+<div class="hero-wrap" style="background-image: url('@Url.Content(@Model.First().RoomTypeDetail.Images.First().imagePath)');">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text d-flex align-itemd-center justify-content-center">
