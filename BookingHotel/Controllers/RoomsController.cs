@@ -22,13 +22,62 @@ namespace BookingHotel.Controllers
         }
 
         // GET: Rooms
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+            ViewData["RoomTypeSortParm"] = sortOrder == "rt" ? "rt_desc" : "rt";
+            ViewData["StatusSortParm"] = sortOrder == "status" ? "status_desc" : "status";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
             var rooms = _context.Rooms
-            .Include(r => r.RoomType)
-            .AsNoTracking();
-            return View(await rooms.ToListAsync());
-            //return View(await _context.Rooms.ToListAsync());
+           .Include(r => r.RoomType)
+           .AsNoTracking();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                rooms = rooms.Where(r => r.roomName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name":
+                    rooms = rooms.OrderBy(r => r.roomName);
+                    break;
+                case "name_desc":
+                    rooms = rooms.OrderByDescending(r => r.roomName);
+                    break;
+                case "rt":
+                    rooms = rooms.OrderBy(r => r.roomTypeID);
+                    break;
+                case "rt_desc":
+                    rooms = rooms.OrderByDescending(r => r.roomTypeID);
+                    break;
+                case "status":
+                    rooms = rooms.OrderBy(r => r.status);
+                    break;
+                case "status_desc":
+                    rooms = rooms.OrderByDescending(r => r.status);
+                    break;
+                default:
+                    rooms = rooms.OrderByDescending(r => r.roomID);
+                    break;
+            }
+
+            int pageSize = 6;
+            return View(await PaginatedList<Room>.CreateAsync(rooms.AsNoTracking(), pageNumber ?? 1, pageSize));
+
+            //return View(await rooms.ToListAsync());
         }
 
         //GET: Rooms/Details/5
@@ -38,17 +87,22 @@ namespace BookingHotel.Controllers
             {
                 return NotFound();
             }
-            var code = _context.Rooms.Where(r => r.roomID == id)
-                        .Select(r => r.roomTypeID).ToList();
 
-            var room = await _context.Rooms
-                .Include(r => r.RoomType)
-                    .ThenInclude(rt => rt.RoomTypeDetail)
-                .Include(r => r.Enrollment)
-                    .ThenInclude(a => a.Account)
-                        .ThenInclude(rq => rq.Requests)
-                    .AsNoTracking()
-                .FirstOrDefaultAsync(r => r.roomID == id);
+            var room = await _context.Enrollments
+                .Include(e => e.Room)
+                .Include(e => e.Account)
+                    .ThenInclude(e => e.Requests)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.roomID == id);
+
+            //var room = await _context.Rooms
+            //    .Include(r => r.RoomType)
+            //        .ThenInclude(rt => rt.RoomTypeDetail)
+            //    .Include(r => r.Enrollment)
+            //        .ThenInclude(a => a.Account)
+            //            .ThenInclude(rq => rq.Requests)
+            //        .AsNoTracking()
+            //    .FirstOrDefaultAsync(r => r.roomID == id);
 
             if (room == null)
             {
@@ -66,12 +120,12 @@ namespace BookingHotel.Controllers
         //    }
 
         //    var viewModel = new RoomDetailData();
-        //    viewModel.Rooms =  await _context.Rooms
+        //    viewModel.Rooms = await _context.Rooms
         //        .Include(r => r.RoomType)
         //        .Include(r => r.Enrollment)
         //            .ThenInclude(r => r.Account)
         //        .Include(r => r.Enrollment)
-        //            .ThenInclude(r => r.Account)   
+        //            .ThenInclude(r => r.Account)
         //        .AsNoTracking()
         //        .OrderBy(r => r.roomName)
         //        .ToListAsync();
@@ -89,19 +143,17 @@ namespace BookingHotel.Controllers
         // GET: Rooms/Create
         public IActionResult Create()
         {
+            ViewBag.RoomTypes = new SelectList(_context.RoomTypes, "roomTypeID", "roomTypeName");
             return View();
         }
 
-        // POST: Rooms/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("roomID,roomName,roomTypeID,guest")] Room room)
+        public async Task<IActionResult> Create([Bind("roomID,roomName,roomTypeID,guest,status")] Room room)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
+                _context.Add(room);        
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -115,6 +167,8 @@ namespace BookingHotel.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.RoomTypes = new SelectList(_context.RoomTypes, "roomTypeID", "roomTypeName");
 
             var room = await _context.Rooms.FindAsync(id);
             if (room == null)
@@ -191,14 +245,14 @@ namespace BookingHotel.Controllers
             {
                 _context.Rooms.Remove(room);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RoomExists(int id)
         {
-          return _context.Rooms.Any(e => e.roomID == id);
+            return _context.Rooms.Any(e => e.roomID == id);
         }
     }
 }

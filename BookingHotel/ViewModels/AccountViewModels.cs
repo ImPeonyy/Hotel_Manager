@@ -44,4 +44,16 @@ namespace BookingHotel.ViewModels
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }
+    public class LoginViewModel
+    {
+        [Required]
+        [StringLength(30, MinimumLength = 6, ErrorMessage = "Invalid length")]
+        [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Invalid Username .")]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 6, ErrorMessage = "Invalid length")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+    }
 }

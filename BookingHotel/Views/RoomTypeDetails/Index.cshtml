@@ -1,0 +1,100 @@
+﻿@model PaginatedList<BookingHotel.Models.RoomTypeDetail>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_ManagementLayout";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">ID</a>
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["OccupancySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Occupancy</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ViewSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">View</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SizeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Size</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["BedSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Bed</a>
+            </th>
+            <th>
+                Room Type
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.roomTypeDetailID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.maxPeople)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.view)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.bed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomType.roomTypeName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.roomTypeDetailID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.roomTypeDetailID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.roomTypeDetailID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

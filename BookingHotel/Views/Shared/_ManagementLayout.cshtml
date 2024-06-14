@@ -120,7 +120,7 @@
 <!--Nabar-->
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Im<span></span></a>
+            <a class="navbar-brand" href="index.html">Habor<span>Light</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="oi oi-menu"></span> Menu
             </button>
@@ -134,8 +134,8 @@
                         <a asp-area="" asp-controller="Home" asp-action="OurRooms" class="nav-link">Our Rooms</a>
                     </li>
 
-                    <li class="nav-item"><a href="restaurant.html" class="nav-link">Restaurant</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a asp-controller="Home" asp-action="Restaurant" class="nav-link">Restaurant</a></li>
+                    <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">About Us</a></li>
                     <li class="nav-item"><a asp-controller="Home" asp-action="Blog" class="nav-link">Blog</a></li>
                     @*<li class="nav-item"><a asp-controller="Home" asp-action="LogOut" class="nav-link">LogOut</a></li>*@
 
@@ -143,9 +143,11 @@
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Xin chào, @User.Identity.Name
+                                Hello, @User.Identity.Name
                             </a>
+                            
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                             </div>
                         </li>
@@ -175,11 +177,13 @@
     <div class="container1 d-flex">
     <div class="sidebar col-md-2 p-3 bg-light">
         <ul class="list-group">
-            <li class="list-group-item"><a href="#">Quản lý người dùng</a></li>
-            <li class="list-group-item"><a asp-area="" asp-controller="Rooms" asp-action="Index">Quản Phòng</a></li>
-            <li class="list-group-item"><a href="#">Quản lý loại phòng</a></li>
-            <li class="list-group-item"><a href="#">Quản lý dịch vụ</a></li>
-            <li class="list-group-item"><a asp-area="" asp-controller="Request" asp-action="Index">Quản lý yêu cầu</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="AccountsUser" asp-action="Index">Accounts Management</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="Rooms" asp-action="Index">Rooms Management</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="RoomTypes" asp-action="Index">Room Types Management</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="RoomTypeDetails" asp-action="Index">Room Type Details Management</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="RoomTypeImages" asp-action="Index">Room Type Images Management</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="" asp-action="">Quản lý dịch vụ</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="Request" asp-action="Index">Requests Management</a></li>
             <li class="list-group-item"><a href="#">ABC</a></li>
             <li class="list-group-item"><a href="#">ABC</a></li>
         </ul>
@@ -188,7 +192,11 @@
     <div class="main-content col-md-10">
         @RenderBody()
     </div>
+    
 </div>
+    <footer class="footer" style="background-color: #999999;width : 100%; height: 80px">
+
+    </footer>
     <script src="~/TemplateUser/js/jquery.min.js"></script>
     <script src="~/TemplateUser/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="~/TemplateUser/~/TemplateUser/js/popper.min.js"></script>

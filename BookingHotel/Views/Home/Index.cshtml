@@ -1,4 +1,4 @@
-﻿@model BookingHotel.Models.Request
+﻿@model BookingHotel.ViewModels.HomePageViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -48,16 +48,16 @@
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label asp-for="dateCheckIn"></label>
-                                    <input asp-for="dateCheckIn" id="checkin_date" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
+                                    <label asp-for="Request.dateCheckIn"></label>
+                                    <input asp-for="Request.dateCheckIn" id="checkin_date" class="form-control form-control-lg" id="checkin_date" name="dateCheckIn" required>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label asp-for="dateCheckOut"></label>
-                                    <input asp-for="dateCheckOut" id="checkout_date" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut" required>
+                                    <label asp-for="Request.dateCheckOut"></label>
+                                    <input asp-for="Request.dateCheckOut" id="checkout_date" class="form-control form-control-lg" id="checkout_date" name="dateCheckOut" required>
                                 </div>
                             </div>
                         </div>
@@ -68,9 +68,9 @@
                                     <div class="form-field">
                                         <div class="select-wrap">
                                             <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                            <select asp-for="RoomType" id="room_type" name="roomTypeID" class="form-control form-control-lg" required onchange="updateGuestCount()">
+                                            <select asp-for="Request.RoomType" id="room_type" name="roomTypeID" class="form-control form-control-lg" required onchange="updateGuestCount()">
                                                 <option value="">Room Type</option>
-                                                @foreach (var item in ViewBag.RoomTypeViewModels)
+                                                @foreach (var item in Model.RoomTypeViewModels)
                                                 {
                                                     if (item.RoomLeft > 0)
                                                     {
@@ -90,8 +90,8 @@
                         <div class="col-md-6 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label asp-for="guestCount"></label>
-                                    <input asp-for="guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" readonly required>
+                                    <label asp-for="Request.guestCount"></label>
+                                    <input asp-for="Request.guestCount" id="guest_count" name="guestCount" class="form-control form-control-lg" readonly required>
                                 </div>
                             </div>
                         </div>
@@ -99,8 +99,8 @@
                         <div class="col-md-12 d-flex py-md-4">
                             <div class="form-group align-self-stretch d-flex align-items-end">
                                 <div class="wrap align-self-stretch py-3 px-4">
-                                    <label asp-for="message">Message</label>
-                                    <textarea asp-for="message" id="message" name="message" class="form-control form-control-lg" rows="3" placeholder="Write your message here..."></textarea>
+                                    <label asp-for="Request.message">Message</label>
+                                    <textarea asp-for="Request.message" id="message" name="message" class="form-control form-control-lg" rows="3" placeholder="Write your message here..."></textarea>
                                 </div>
                             </div>
                         </div>                       

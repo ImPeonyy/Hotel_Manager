@@ -36,10 +36,16 @@ namespace BookingHotel.Controllers
                 Value = rt.roomTypeID,
                 Text = rt.roomTypeName,
                 RoomLeft = rt.roomLeft,
-                MaxPeople = rt.RoomTypeDetail?.maxPeople ?? 0 
+                MaxPeople = rt.RoomTypeDetail?.maxPeople ?? 0
             }).ToList();
-            ViewBag.RoomTypeViewModels = roomTypeViewModels;
-            return View();
+
+            var model = new ViewModels.HomePageViewModel
+            {
+                RoomTypeViewModels = roomTypeViewModels,
+                Request = new Request()
+            };
+
+            return View(model);
         }
         [HttpPost]
         public IActionResult Booking(Request model)
@@ -48,8 +54,8 @@ namespace BookingHotel.Controllers
             {
                 var username = HttpContext.User.Identity.Name;
 
-                    if (model.dateCheckIn > model.dateCheckOut || model.dateCheckIn < DateTime.Now)
-                    {
+                if (model.dateCheckIn >= model.dateCheckOut || model.dateCheckIn < DateTime.Today)
+                {
                         TempData["ErrorMesssage"] = "Please select a valid date";
                         return RedirectToAction("Index", "Home");
                     }
@@ -90,10 +96,6 @@ namespace BookingHotel.Controllers
         }
 
 
-
-
-
-
         public IActionResult Privacy()
         {
             return View();
@@ -102,11 +104,25 @@ namespace BookingHotel.Controllers
         {
             var roomTypes = _context.RoomTypes
             .Include(r => r.RoomTypeDetail)
+                .ThenInclude(r => r.Images)
             .AsNoTracking();
             return View(await roomTypes.ToListAsync());
         }
         public async Task<IActionResult> RoomDetail(int? id)
         {
+            //if (id == null || _context.Rooms == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var viewModel = new RoomTypeData();
+            //var roomTypeDetails = await _context.RoomTypeDetails
+            //    .Include(r => r.Service)
+            //    .Include(r => r.Images)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+
+            //return View(roomTypeDetails);
 
             if (id == null || _context.RoomTypes == null)
             {
@@ -115,22 +131,18 @@ namespace BookingHotel.Controllers
 
             var roomTypes = await _context.RoomTypes
             .Include(r => r.RoomTypeDetail)
+                .ThenInclude(r => r.Service)
+            .Include(r => r.RoomTypeDetail)
+                .ThenInclude(r => r.Images)
             .AsNoTracking()
             .FirstOrDefaultAsync(rt => rt.roomTypeID == id);
-            return View(roomTypes);
-
-            if (roomTypes == null)
-            {
-                return NotFound();
-            }
-
             return View(roomTypes);
         }
         public IActionResult Contact()
         {
             return View();
         }
-        public IActionResult Blog()
+        public IActionResult About()
         {
             return View();
         }
@@ -143,6 +155,10 @@ namespace BookingHotel.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult Restaurant()
+        {
+            return View();
         }
     }
 }

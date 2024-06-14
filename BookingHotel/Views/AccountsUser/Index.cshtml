@@ -1,0 +1,179 @@
+﻿@model PaginatedList<BookingHotel.Models.Account>
+
+@{
+    Layout = "_ManagementLayout";
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    .btn-primary {
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .btn-icon {
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+    .custom-form {
+        display: flex;
+        gap: 10px;
+    }
+
+        .custom-form .form-group {
+            margin-right: 0;
+        }
+
+        .custom-form input[type="text"],
+        .custom-form select,
+        .custom-form button {
+            height: 30px;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+
+        .custom-form .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            height: 30px;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+            .custom-form .btn-primary i {
+                margin-right: 5px;
+            }
+
+        .custom-form .btn-info {
+            display: inline-flex;
+            align-items: center;
+            height: 30px;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+        }
+</style>
+
+<h1>Accounts Management</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-action="Index" method="get" class="custom-form">
+    <div class="form-group">
+        <label for="searchString" class="mr-2">Find by name:</label>
+        <input type="text" id="searchString" name="SearchString" value="@ViewData["CurrentFilter"]" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Search
+        </button>
+    </div>
+    <div class="form-group">
+        <a asp-action="Index" class="btn btn-info">Back to Full List</a>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().phoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phoneNumber)
+                </td>
+                <td>
+                    @if (item.role == 0)
+                    {
+                        <text>User</text>
+                    }
+                    else if (item.role == 1)
+                    {
+                        <text>Admin</text>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.accountID" class="btn btn-info btn-icon">
+                        <i class="fas fa-edit"></i> Edit
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.accountID" class="btn btn-success btn-icon">
+                        <i class="fas fa-eye"></i> Details
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.accountID" class="btn btn-danger btn-icon">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    Page @(Model.PageIndex) of @(Model.TotalPages)
+</div>
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" asp-route-searchString="@ViewData["CurrentFilter"]" class="btn btn-info">Previous</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" asp-route-searchString="@ViewData["CurrentFilter"]" class="btn btn-info">Next</a>
+    }
+</div>

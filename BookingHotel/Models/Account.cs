@@ -9,7 +9,7 @@ namespace BookingHotel.Models
         public string password { get; set; }
         public string name { get; set; }
         public string phoneNumber { get; set; }
-        public string role { get; set; }
+        public int role { get; set; }
 
         public ICollection<Request> Requests { get; set; }
         public ICollection<Enrollment> Enrollment { get; set; }

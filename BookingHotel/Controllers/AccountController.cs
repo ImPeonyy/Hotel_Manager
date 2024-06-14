@@ -11,6 +11,7 @@ using static BookingHotel.ViewModels.AccountViewModels;
 using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using BookingHotel.ViewModels;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace BookingHotel.Controllers
 {
@@ -69,7 +70,7 @@ namespace BookingHotel.Controllers
                 password = model.Password, 
                 name = model.Name,
                 phoneNumber = model.PhoneNumber,
-                role = "0"
+                role = 0
             };
 
             _context.Accounts.Add(account);
@@ -92,24 +93,23 @@ namespace BookingHotel.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(AccountViewModels model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-                var account = _context.Accounts.FirstOrDefault(a => a.username == model.Username && a.password == model.Password);
+            var account = _context.Accounts.FirstOrDefault(a => a.username == model.Username && a.password == model.Password);
             if (account != null)
             {
-                var role = account.role;
+                var role = account.role.ToString();
                 List<Claim> claims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.Name, model.Username),
-                        new Claim(ClaimTypes.Role, role),
-                    };
+        {
+            new Claim(ClaimTypes.Name, model.Username),
+            new Claim(ClaimTypes.Role, role),
+        };
                 ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
 
                 await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
@@ -121,6 +121,8 @@ namespace BookingHotel.Controllers
             }
             return View(model);
         }
+
+
         /* End đăng nhập*/
 
         /* =============ĐĂNG XUẤT============= */
