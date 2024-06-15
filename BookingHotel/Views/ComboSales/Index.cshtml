@@ -1,0 +1,80 @@
+﻿@model BookingHotel.Models.COMBOGenreViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_ManagementLayout";
+}
+
+<h1>Index</h1>
+
+
+<H2 class="navbar-brand">ComBoSale</H2>
+
+<p>
+    <a class="btn btn-primary py-5 py-md-3 px-5 align-self-stretch d-block" asp-action="Create">Create New</a>
+</p>
+
+<form asp-controller="ComboSales" asp-action="Index" method="get">
+    <p>
+        <select asp-for="CombosaleGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" name="SearchString" placeholder="Search..." />
+
+        <input type="submit" value="Filter" class="btn btn-secondary rounded" />
+
+
+    </p>
+</form>
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ComboSales![0].title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComboSales![0].genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComboSales![0].ShortContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComboSales![0].image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComboSales![0].price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ComboSales!)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortContent)
+                </td>
+                <td>
+                    <img style="width:100px; height:100px" src="~/hinhanhsale/@item.image" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-secondary rounded" asp-route-id="@item.comboSaleID">Edit</a> |
+                    <a asp-action="Details" class="btn btn-secondary rounded" asp-route-id="@item.comboSaleID">Details</a> |
+                    <a asp-action="Delete" class="btn btn-secondary rounded" asp-route-id="@item.comboSaleID">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

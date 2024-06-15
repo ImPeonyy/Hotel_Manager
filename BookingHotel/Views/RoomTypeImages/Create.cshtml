@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="roomTypeDetailID" class="control-label"></label>
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="imagePath" class="control-label"></label>
-                <input asp-for="imagePath" class="form-control" />
+                <input asp-for="imagePath" class="form-control" type="file" id="Image" name="Image" accept="image/*" />
                 <span asp-validation-for="imagePath" class="text-danger"></span>
             </div>
             <div class="form-group">

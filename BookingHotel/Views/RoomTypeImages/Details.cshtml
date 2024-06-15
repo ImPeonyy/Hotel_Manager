@@ -15,13 +15,13 @@
             @Html.DisplayNameFor(model => model.imagePath)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.imagePath)
+            <img  src="@Html.DisplayFor(Model => Model.imagePath)" />
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.RoomTypeDetail)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoomTypeDetail.roomTypeDetailID)
+            @Html.DisplayFor(model => model.RoomTypeDetail.RoomType.roomTypeName)
         </dd>
     </dl>
 </div>

@@ -20,10 +20,56 @@ namespace BookingHotel.Controllers
         }
 
         // GET: RoomTypeImages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
-            var hotelContext = _context.roomTypeImages.Include(r => r.RoomTypeDetail);
-            return View(await hotelContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["IDSortParm"] = sortOrder == "id" ? "id_desc" : "id";
+            ViewData["rtSortParm"] = sortOrder == "rt" ? "rt_desc" : "rt";
+
+
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var roomTypeImages = _context.roomTypeImages
+                .Include(r => r.RoomTypeDetail)
+                    .ThenInclude(r => r.RoomType)
+                .AsNoTracking();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                roomTypeImages = roomTypeImages.Where(r => r.imagePath.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "id":
+                    roomTypeImages = roomTypeImages.OrderBy(r => r.ID);
+                    break;
+                case "id_desc":
+                    roomTypeImages = roomTypeImages.OrderByDescending(r => r.ID);
+                    break;
+                case "rt":
+                    roomTypeImages = roomTypeImages.OrderBy(r => r.RoomTypeDetail.RoomType.roomTypeName);
+                    break;
+                case "rt_desc":
+                    roomTypeImages = roomTypeImages.OrderByDescending(r => r.RoomTypeDetail.RoomType.roomTypeName);
+                    break;
+                default:
+                    roomTypeImages = roomTypeImages.OrderBy(r => r.ID);
+                    break;
+            }
+
+            int pageSize = 6;
+            return View(await PaginatedList<RoomTypeImage>.CreateAsync(roomTypeImages.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: RoomTypeImages/Details/5
@@ -36,6 +82,7 @@ namespace BookingHotel.Controllers
 
             var roomTypeImage = await _context.roomTypeImages
                 .Include(r => r.RoomTypeDetail)
+                    .ThenInclude(r => r.RoomType)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (roomTypeImage == null)
             {
@@ -48,7 +95,7 @@ namespace BookingHotel.Controllers
         // GET: RoomTypeImages/Create
         public IActionResult Create()
         {
-            ViewData["roomTypeDetailID"] = new SelectList(_context.RoomTypeDetails, "roomTypeDetailID", "roomTypeDetailID");
+            ViewData["roomTypeDetailID"] = new SelectList(_context.RoomTypes, "roomTypeID", "roomTypeName");
             return View();
         }
 
@@ -57,12 +104,29 @@ namespace BookingHotel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,roomTypeDetailID,imagePath")] RoomTypeImage roomTypeImage)
+        public async Task<IActionResult> Create([Bind("ID,roomTypeDetailID,imagePath")] RoomTypeImage roomTypeImage, IFormFile Image)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(roomTypeImage);
-                await _context.SaveChangesAsync();
+                if (Image != null && Image.Length > 0) // Sửa tên biến file input
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/roomtypeimages", fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(fileStream);
+                    }
+                    roomTypeImage.imagePath = "/img/roomtypeimages/" + fileName;
+                }
+
+                // Lưu đối tượng Menu với đường dẫn ảnh đã cập nhật
+                if (roomTypeImage != null) // Kiểm tra null
+                {
+                    _context.Add(roomTypeImage);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["roomTypeDetailID"] = new SelectList(_context.RoomTypeDetails, "roomTypeDetailID", "roomTypeDetailID", roomTypeImage.roomTypeDetailID);
@@ -82,7 +146,7 @@ namespace BookingHotel.Controllers
             {
                 return NotFound();
             }
-            ViewData["roomTypeDetailID"] = new SelectList(_context.RoomTypeDetails, "roomTypeDetailID", "roomTypeDetailID", roomTypeImage.roomTypeDetailID);
+            ViewData["roomTypeDetailID"] = new SelectList(_context.RoomTypes, "roomTypeID", "roomTypeName");
             return View(roomTypeImage);
         }
 
@@ -91,7 +155,7 @@ namespace BookingHotel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,roomTypeDetailID,imagePath")] RoomTypeImage roomTypeImage)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,roomTypeDetailID,imagePath")] RoomTypeImage roomTypeImage, IFormFile Image)
         {
             if (id != roomTypeImage.ID)
             {
@@ -100,6 +164,18 @@ namespace BookingHotel.Controllers
 
             if (ModelState.IsValid)
             {
+                if (Image != null && Image.Length > 0) // Sửa tên biến file input
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/roomtypeimages", fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(fileStream);
+                    }
+                    roomTypeImage.imagePath = "/img/roomtypeimages/" + fileName;
+                }
+
                 try
                 {
                     _context.Update(roomTypeImage);

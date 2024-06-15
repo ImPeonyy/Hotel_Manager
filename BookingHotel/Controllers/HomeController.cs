@@ -31,6 +31,16 @@ namespace BookingHotel.Controllers
         public IActionResult Index()
         {
             var roomTypes = _context.RoomTypes.Include(rt => rt.RoomTypeDetail).ToList();
+            var roomIndex = _context.RoomTypes
+                .Include(rt => rt.RoomTypeDetail)
+                    .ThenInclude(r => r.Images)
+                .OrderBy(m => Guid.NewGuid())
+                .Take(4)
+                .ToList();
+            var randomMenuItems = _context.Menus
+               .OrderBy(m => Guid.NewGuid())
+               .Take(3)
+               .ToList();
             var roomTypeViewModels = roomTypes.Select(rt => new ViewModels.RoomTypeViewModel
             {
                 Value = rt.roomTypeID,
@@ -39,10 +49,13 @@ namespace BookingHotel.Controllers
                 MaxPeople = rt.RoomTypeDetail?.maxPeople ?? 0
             }).ToList();
 
+
             var model = new ViewModels.HomePageViewModel
             {
                 RoomTypeViewModels = roomTypeViewModels,
-                Request = new Request()
+                RoomTypes = roomIndex,
+                Request = new Request(),
+                Menus = randomMenuItems
             };
 
             return View(model);
@@ -156,9 +169,24 @@ namespace BookingHotel.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult Restaurant()
+        public async Task<IActionResult> Restaurant(string searchString, int? pageNumber)
         {
-            return View();
+            ViewData["CurrentFilter"] = searchString;
+
+            var menus = from m in _context.Menus
+                        select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                menus = menus.Where(s => s.dishName.Contains(searchString));
+            }
+            var randomMenuItems = _context.Menus
+            .OrderBy(m => Guid.NewGuid())
+            .Take(3)
+            .ToList();
+            ViewBag.LatestMenuItems = randomMenuItems;
+            int pageSize = 6;
+            return View(await PaginatedList<Menu>.CreateAsync(menus.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
     }
 }

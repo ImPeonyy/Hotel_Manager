@@ -1,0 +1,87 @@
+﻿@model BookingHotel.Models.Menu
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_ManagementLayout";
+}
+
+<style>
+    .col-md-3 {
+        width: 100%; /* Adjust this as needed */
+        max-width: 300px; /* Adjust this as needed for the size of the square */
+        height: 300px; /* Ensure this matches the max-width for a square */
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f8f9fa;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+
+    .img-fluid {
+   max-width: 100%;
+        max-height: 100%;
+        display: block;
+        object-fit: cover;
+}
+
+</style>
+<h1>Edit</h1>
+
+<h4>Menu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="dishName" class="control-label"></label>
+                <input asp-for="dishName" class="form-control" />
+                <span asp-validation-for="dishName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dishDescription" class="control-label"></label>
+                <textarea asp-for="dishDescription" class="form-control"></textarea>
+                <span asp-validation-for="dishDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dishPrice" class="control-label"></label>
+                <input asp-for="dishPrice" class="form-control" />
+                <span asp-validation-for="dishPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dishImage" class="control-label"></label>
+                <input asp-for="dishImage" class="form-control" type="file" />
+                @if (!string.IsNullOrEmpty(Model.dishImage))
+                {
+                    <small class="form-text text-muted">
+                        Current Image Path: <a href="@Model.dishImage" target="_blank">@Model.dishImage</a>
+                    </small>
+                }
+                <span asp-validation-for="dishImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a asp-action="Index" class="btn btn-secondary btn-icon mr-2"> 
+                    <i class="fas fa-list"></i> Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3">
+        @if (!string.IsNullOrEmpty(Model.dishImage))
+        {
+            <img src="@Model.dishImage" class="img-fluid" alt="Current Image" />
+        }
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

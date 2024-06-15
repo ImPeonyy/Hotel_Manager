@@ -80,9 +80,7 @@
     .container1{
             margin-top: 20px !important;
     }*/
-        .container1 {
-            height: 100vh;
-        }
+        
 
         .sidebar {
             height: 100%;
@@ -120,7 +118,7 @@
 <!--Nabar-->
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Habor<span>Light</span></a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Habor<span>Light</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="oi oi-menu"></span> Menu
             </button>
@@ -182,10 +180,10 @@
             <li class="list-group-item"><a asp-area="" asp-controller="RoomTypes" asp-action="Index">Room Types Management</a></li>
             <li class="list-group-item"><a asp-area="" asp-controller="RoomTypeDetails" asp-action="Index">Room Type Details Management</a></li>
             <li class="list-group-item"><a asp-area="" asp-controller="RoomTypeImages" asp-action="Index">Room Type Images Management</a></li>
-            <li class="list-group-item"><a asp-area="" asp-controller="" asp-action="">Quản lý dịch vụ</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="Services" asp-action="Index">Serviecs Management</a></li>
             <li class="list-group-item"><a asp-area="" asp-controller="Request" asp-action="Index">Requests Management</a></li>
-            <li class="list-group-item"><a href="#">ABC</a></li>
-            <li class="list-group-item"><a href="#">ABC</a></li>
+            <li class="list-group-item"><a asp-area="" asp-controller="ComboSales" asp-action="Index">Combo Sales Management</a></li>
+                <li class="list-group-item"><a asp-area="" asp-controller="Menus" asp-action="Index">Menus Management</a></li>
         </ul>
     </div>
     <!-- Nội dung chính -->
@@ -194,9 +192,7 @@
     </div>
     
 </div>
-    <footer class="footer" style="background-color: #999999;width : 100%; height: 80px">
 
-    </footer>
     <script src="~/TemplateUser/js/jquery.min.js"></script>
     <script src="~/TemplateUser/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="~/TemplateUser/~/TemplateUser/js/popper.min.js"></script>

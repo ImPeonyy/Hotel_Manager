@@ -15,7 +15,7 @@
             Tên phòng:
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.roomName)
+            @ViewBag.r
         </dd>
 
         @if (Model != null)
@@ -23,15 +23,16 @@
             <dt class="col-sm-2">
                 Tên khách hàng:
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.name)
-            </dd>
-            <dt class="col-sm-2">
-                Số điện thoại khách hàng:
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.phoneNumber)
-            </dd>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.name)
+                </dd>
+                <dt class="col-sm-2">
+                    Số điện thoại khách hàng:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.phoneNumber)
+                </dd>
+
             <dt class="col-sm-2">
                 Thời gian nhận phòng:
             </dt>

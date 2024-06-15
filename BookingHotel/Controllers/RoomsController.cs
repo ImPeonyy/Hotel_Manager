@@ -25,6 +25,7 @@ namespace BookingHotel.Controllers
         public async Task<IActionResult> Index(string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
+            ViewData["IDSortParm"] = sortOrder == "id" ? "id_desc" : "id";
             ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
             ViewData["RoomTypeSortParm"] = sortOrder == "rt" ? "rt_desc" : "rt";
             ViewData["StatusSortParm"] = sortOrder == "status" ? "status_desc" : "status";
@@ -51,6 +52,12 @@ namespace BookingHotel.Controllers
 
             switch (sortOrder)
             {
+                case "id":
+                    rooms = rooms.OrderBy(r => r.roomTypeID);
+                    break;
+                case "id_desc":
+                    rooms = rooms.OrderByDescending(r => r.roomTypeID);
+                    break;
                 case "name":
                     rooms = rooms.OrderBy(r => r.roomName);
                     break;
@@ -88,6 +95,9 @@ namespace BookingHotel.Controllers
                 return NotFound();
             }
 
+            var rooms = _context.Rooms.AsNoTracking().FirstOrDefault(r => r.roomID == id);
+            ViewBag.r = rooms.roomName;
+
             var room = await _context.Enrollments
                 .Include(e => e.Room)
                 .Include(e => e.Account)
@@ -103,11 +113,6 @@ namespace BookingHotel.Controllers
             //            .ThenInclude(rq => rq.Requests)
             //        .AsNoTracking()
             //    .FirstOrDefaultAsync(r => r.roomID == id);
-
-            if (room == null)
-            {
-                return NotFound();
-            }
 
             return View(room);
         }

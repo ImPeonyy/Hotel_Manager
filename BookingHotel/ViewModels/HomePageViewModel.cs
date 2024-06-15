@@ -6,5 +6,10 @@ namespace BookingHotel.ViewModels
     {
         public Request Request { get; set; }
         public IEnumerable<RoomTypeViewModel> RoomTypeViewModels { get; set; }
+
+        public IEnumerable<RoomType> RoomTypes { get; set; }
+        public IEnumerable<RoomTypeDetail> RoomTypeDetails  { get; set; }
+        public IEnumerable<RoomTypeImage> RoomTypeImages { get; set; }
+        public IEnumerable<Menu> Menus { get; set; }
     }
 }
